@@ -1,24 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../model/lanes.dart';
-import 'lanes_service/lanes_service.dart';
-import 'lanes_service/state/lanes_provider.dart';
-
-final lanesProvider = StateNotifierProvider<LanesNotifier, Map<String, List<Lane>>>((ref) {
-  return LanesNotifier();
-});
-
-class LanesNotifier extends StateNotifier<Map<String, List<Lane>>> {
-  LanesNotifier() : super({});
-
-  Future<void> fetchLanes(BuildContext context, String rv) async {
-    if (!state.containsKey(rv)) {
-      final lanes = await LanesService().getAllLanes(context, rv);
-      state = {...state, rv: lanes};
-    }
-  }
-}
+import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
 
 class LanesPage extends ConsumerWidget {
   const LanesPage({super.key});
@@ -52,7 +34,6 @@ class LanesPage extends ConsumerWidget {
   }
 
   Widget _buildLaneList(BuildContext context, WidgetRef ref, String rv) {
-    // Fetch lanes only if they haven't been fetched yet
     ref.read(lanesProvider.notifier).fetchLanes(context, rv);
 
     final lanesMap = ref.watch(lanesProvider);
@@ -67,31 +48,41 @@ class LanesPage extends ConsumerWidget {
         itemCount: lanes.length,
         itemBuilder: (context, index) {
           final lane = lanes[index];
-          final isSelected = selectedLanes.any((selectedLane) => selectedLane.id == lane.id);
-
-          return ListTile(
-            title: Row(
-              children: [
-                Text(
-                  lane.broj,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    lane.linija,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
-            trailing: isSelected
-                ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
-                : null,
-            onTap: () {
-              ref.read(selectedLanesProvider.notifier).toggleLaneSelection(lane);
-            },
+          final isSelected = selectedLanes.any(
+                (selectedLane) => selectedLane.lane.id == lane.id && selectedLane.type == rv,
           );
+
+          return Column(
+            children: [
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0), // Adjusts padding
+                visualDensity: VisualDensity.compact, // Reduces vertical space
+                title: Row(
+                  children: [
+                    Text(
+                      lane.broj,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        lane.linija,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+                trailing: isSelected
+                    ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
+                    : null,
+                onTap: () {
+                  ref.read(selectedLanesProvider.notifier).toggleLaneSelection(lane, rv);
+                },
+              ),
+              const Divider(height: 1),  // Reduced height for the divider
+            ],
+          );
+
         },
       );
     }

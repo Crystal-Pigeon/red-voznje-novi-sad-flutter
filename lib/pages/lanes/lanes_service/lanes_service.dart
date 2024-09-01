@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../../model/lanes.dart';
 import '../../splash_screen/shared/services/network/base_client.dart';
+import '../model/lane.dart';
 
 class LanesService extends BaseClient {
   static String urlAllLanes = "/all-lanes";
