@@ -19,6 +19,7 @@ dependencies:
   json_annotation: ^4.8.0
   shared_preferences: ^2.1.0
   collection: ^1.15.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

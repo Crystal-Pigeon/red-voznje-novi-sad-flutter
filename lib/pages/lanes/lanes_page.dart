@@ -73,7 +73,7 @@ class LanesPage extends ConsumerWidget {
                   ],
                 ),
                 trailing: isSelected
-                    ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
+                    ? Icon(Icons.check, color: Theme.of(context).colorScheme.onPrimary)
                     : null,
                 onTap: () {
                   ref.read(selectedLanesProvider.notifier).toggleLaneSelection(lane, rv);

@@ -46,11 +46,26 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
               key: ValueKey(reorderedLanes[index].lane.id),
               children: [
                 ListTile(
-                  title: Text(
-                    '${reorderedLanes[index].lane.broj} ${reorderedLanes[index].lane.linija}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                  title: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${reorderedLanes[index].lane.broj}  ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Theme.of(context).textTheme.titleLarge?.color,
+                          ),
+                        ),
+                        TextSpan(
+                          text: reorderedLanes[index].lane.linija,
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13,
+                            color: Theme.of(context).textTheme.titleLarge?.color,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   trailing: const Icon(Icons.drag_indicator),

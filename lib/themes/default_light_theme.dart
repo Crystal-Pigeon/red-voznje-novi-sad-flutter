@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 const defaultPrimaryColor = Color(0xFF016AFA);
-const backgroundColor = Colors.white;
+const backgroundColor = Color.fromRGBO(240, 243, 244, 1.0);
 const onBackgroundColor = Color.fromRGBO(51, 51, 51, 1);
-const surfaceContainerColor = Color.fromRGBO(234, 234, 234, 1.0);
+const surfaceContainerColor = Color.fromRGBO(255, 255, 255, 1.0);
 const onSurfaceColor = Color.fromRGBO(51, 51, 51, 1);
 const dividerColor = Color.fromRGBO(218, 218, 218, 1);
+const textColor = Color.fromRGBO(47, 41, 41, 1.0);
 
 ThemeData lightTheme() {
   return ThemeData(
     brightness: Brightness.light,
     primaryColor: defaultPrimaryColor,
     colorScheme: const ColorScheme.light(
+      onPrimary: defaultPrimaryColor,
       primary: defaultPrimaryColor,
       surface: backgroundColor,
       surfaceContainer: surfaceContainerColor,
@@ -26,7 +28,7 @@ ThemeData lightTheme() {
               ),
         )
         .apply(
-          bodyColor: onBackgroundColor,
+          bodyColor: textColor,
           displayColor: onBackgroundColor,
         ),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(

@@ -59,7 +59,6 @@ class HomePage extends ConsumerWidget {
           onPressed: () {
             context.pushNamed('lanes');
           },
-          backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.add, color: Colors.white, size: 40),
         ),
       ),

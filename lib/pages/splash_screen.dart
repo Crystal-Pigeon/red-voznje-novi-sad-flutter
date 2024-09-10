@@ -12,7 +12,7 @@ class SplashScreen extends ConsumerWidget {
 
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Center(
         child: Image.asset(
           'lib/assets/splash_screen_app_icon.png', // Path to your SVG asset
