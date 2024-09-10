@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
-
-import '../lanes/model/selected_lane.dart'; // Import your provider
+import '../lanes/model/selected_lane.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
