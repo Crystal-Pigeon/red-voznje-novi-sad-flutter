@@ -14,7 +14,7 @@ class SelectedLanesNotifier extends StateNotifier<List<SelectedLane>> {
   }
 
   void toggleLaneSelection(Lane lane, String type) {
-    final   SelectedLane? existingLane = state.firstWhereOrNull(
+    final SelectedLane? existingLane = state.firstWhereOrNull(
           (selectedLane) => selectedLane.lane.id == lane.id && selectedLane.type == type,
     );
 

@@ -7,27 +7,34 @@ class LanesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Dodaj linije'),
-          centerTitle: true,
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Gradski'),
-              Tab(text: 'Prigradski'),
-            ],
-            indicatorColor: Colors.white,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        // Invalidate the selected lanes provider so HomePage can update its state when navigating back
+        ref.invalidate(selectedLanesProvider);
+        return true; // Allow the pop (back navigation)
+      },
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Dodaj linije'),
+            centerTitle: true,
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Gradski'),
+                Tab(text: 'Prigradski'),
+              ],
+              indicatorColor: Colors.white,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white,
+            ),
           ),
-        ),
-        body: TabBarView(
-          children: [
-            _buildLaneList(context, ref, 'rvg'),
-            _buildLaneList(context, ref, 'rvp'),
-          ],
+          body: TabBarView(
+            children: [
+              _buildLaneList(context, ref, 'rvg'),
+              _buildLaneList(context, ref, 'rvp'),
+            ],
+          ),
         ),
       ),
     );
@@ -55,8 +62,8 @@ class LanesPage extends ConsumerWidget {
           return Column(
             children: [
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0), // Adjusts padding
-                visualDensity: VisualDensity.compact, // Reduces vertical space
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                visualDensity: VisualDensity.compact,
                 title: Row(
                   children: [
                     Text(
@@ -82,7 +89,6 @@ class LanesPage extends ConsumerWidget {
               const Divider(height: 1),  // Reduced height for the divider
             ],
           );
-
         },
       );
     }
