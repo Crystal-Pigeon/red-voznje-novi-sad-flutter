@@ -21,59 +21,69 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sortiranje omiljenih'),
-        centerTitle: true,
-      ),
-      body: reorderedLanes.isEmpty
-          ? _buildTabPageNoLanes()
-          : ReorderableListView(
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) {
-              newIndex -= 1;
-            }
-            final lane = reorderedLanes.removeAt(oldIndex);
-            reorderedLanes.insert(newIndex, lane);
+    return WillPopScope(
+      onWillPop: () async {
+        ref.read(selectedLanesProvider.notifier).setReorderedLanes(reorderedLanes);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Sortiranje omiljenih'),
+          centerTitle: true,
+        ),
+        body: reorderedLanes.isEmpty
+            ? _buildTabPageNoLanes()
+            : ReorderableListView(
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (newIndex > oldIndex) {
+                newIndex -= 1;
+              }
+              final lane = reorderedLanes.removeAt(oldIndex);
+              reorderedLanes.insert(newIndex, lane);
 
-            ref.read(selectedLanesProvider.notifier).setReorderedLanes(reorderedLanes);
-          });
-        },
-        children: [
-          for (int index = 0; index < reorderedLanes.length; index++)
-            Column(
-              key: ValueKey(reorderedLanes[index].lane.id),
-              children: [
-                ListTile(
-                  title: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${reorderedLanes[index].lane.broj}  ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: Theme.of(context).textTheme.titleLarge?.color,
+              // Automatically save the reordered lanes every time the list is reordered
+              ref.read(selectedLanesProvider.notifier).setReorderedLanes(reorderedLanes);
+
+              // Invalidate the provider to ensure it is refreshed
+              ref.invalidate(selectedLanesProvider);
+            });
+          },
+          children: [
+            for (int index = 0; index < reorderedLanes.length; index++)
+              Column(
+                key: ValueKey(reorderedLanes[index].lane.id),
+                children: [
+                  ListTile(
+                    title: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${reorderedLanes[index].lane.broj}  ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: Theme.of(context).textTheme.titleLarge?.color,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: reorderedLanes[index].lane.linija,
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 13,
-                            color: Theme.of(context).textTheme.titleLarge?.color,
+                          TextSpan(
+                            text: reorderedLanes[index].lane.linija,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 13,
+                              color: Theme.of(context).textTheme.titleLarge?.color,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                    trailing: const Icon(Icons.drag_indicator),
                   ),
-                  trailing: const Icon(Icons.drag_indicator),
-                ),
-                const Divider(height: 1),
-              ],
-            ),
-        ],
+                  const Divider(height: 1),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
