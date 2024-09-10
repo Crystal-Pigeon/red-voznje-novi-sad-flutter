@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
 import '../lanes/model/selected_lane.dart';
+import '../reorder_list/reorder_lanes_page.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -18,7 +19,12 @@ class HomePage extends ConsumerWidget {
         appBar: AppBar(
           title: const Text('Red Vožnje - Novi Sad'),
           centerTitle: true,
-          leading: const Icon(Icons.open_with),
+          leading: IconButton(
+            icon: const Icon(Icons.open_with),
+            onPressed: () {
+              context.pushNamed('reorderLanes');
+            },
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),

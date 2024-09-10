@@ -38,7 +38,13 @@ class SelectedLanesNotifier extends StateNotifier<List<SelectedLane>> {
     final storedLanes = state.map((selectedLane) => jsonEncode(selectedLane.toJson())).toList();
     prefs.setStringList('selectedLanes', storedLanes);
   }
+
+  void setReorderedLanes(List<SelectedLane> reorderedLanes) {
+    state = reorderedLanes;
+    _saveSelectedLanes(); // Save the new order
+  }
 }
+
 
 class LanesNotifier extends StateNotifier<Map<String, List<Lane>>> {
   LanesNotifier() : super({});
