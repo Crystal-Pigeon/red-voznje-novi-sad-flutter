@@ -10,7 +10,13 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Watch the selected lanes
     final selectedLanes = ref.watch(selectedLanesProvider);
+
+    // Listening for changes inside the build method to trigger UI updates
+    ref.listen<List<SelectedLane>>(selectedLanesProvider, (previous, next) {
+      // No need to setState here in ConsumerWidget, as the ref.watch will rebuild on change
+    });
 
     return DefaultTabController(
       length: 3,
@@ -43,12 +49,14 @@ class HomePage extends ConsumerWidget {
             unselectedLabelColor: Colors.white,
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildTabContent(selectedLanes, 'R'), // Radni dan
-            _buildTabContent(selectedLanes, 'S'), // Subota
-            _buildTabContent(selectedLanes, 'N'), // Nedelja
-          ],
+        body: Container(
+          child: TabBarView(
+            children: [
+              _buildTabContent(selectedLanes, 'R'), // Radni dan
+              _buildTabContent(selectedLanes, 'S'), // Subota
+              _buildTabContent(selectedLanes, 'N'), // Nedelja
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -71,6 +79,7 @@ class HomePage extends ConsumerWidget {
       itemBuilder: (context, index) {
         final lane = selectedLanes[index];
         return LaneItemWidget(
+          key: ValueKey(lane.lane.id),  // Key for reordering
           lane: lane,
           dayType: dayType,
         );
@@ -91,7 +100,7 @@ class HomePage extends ConsumerWidget {
           ),
           const Text(
             textAlign: TextAlign.center,
-            'Pritisnite “+” kako biste\ndodali autobuse',
+            'Pritisnite “+” kako biste dodali autobuse',
             style: TextStyle(fontSize: 15, color: Colors.grey),
           ),
         ],

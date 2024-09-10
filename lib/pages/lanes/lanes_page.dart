@@ -7,13 +7,7 @@ class LanesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Invalidate the selected lanes provider so HomePage can update its state when navigating back
-        ref.invalidate(selectedLanesProvider);
-        return true; // Allow the pop (back navigation)
-      },
-      child: DefaultTabController(
+    return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
@@ -36,7 +30,6 @@ class LanesPage extends ConsumerWidget {
             ],
           ),
         ),
-      ),
     );
   }
 

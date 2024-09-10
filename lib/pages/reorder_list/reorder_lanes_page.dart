@@ -16,7 +16,6 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize reorderedLanes with the current selected lanes
     reorderedLanes = List.from(ref.read(selectedLanesProvider));
   }
 
@@ -38,14 +37,13 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
             final lane = reorderedLanes.removeAt(oldIndex);
             reorderedLanes.insert(newIndex, lane);
 
-            // Automatically save the reordered lanes every time the list is reordered
             ref.read(selectedLanesProvider.notifier).setReorderedLanes(reorderedLanes);
           });
         },
         children: [
           for (int index = 0; index < reorderedLanes.length; index++)
             Column(
-              key: ValueKey(reorderedLanes[index].lane.id), // Reordering key
+              key: ValueKey(reorderedLanes[index].lane.id),
               children: [
                 ListTile(
                   title: Text(
@@ -57,7 +55,7 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
                   ),
                   trailing: const Icon(Icons.drag_indicator),
                 ),
-                const Divider(height: 1), // Adds the underline to each item
+                const Divider(height: 1),
               ],
             ),
         ],
