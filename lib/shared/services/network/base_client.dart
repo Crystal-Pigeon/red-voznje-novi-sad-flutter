@@ -34,11 +34,11 @@ class BaseClient {
       return null;
     } on SocketException {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please check your internet connection')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Proverite internet konekciju')));
       return null;
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('An error occurred: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Došlo je do greške: $e')));
       return null;
     }
   }
@@ -48,7 +48,7 @@ class BaseClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${response.statusCode}')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Greška: ${response.statusCode}')));
         return null;
       }
     } catch (e) {

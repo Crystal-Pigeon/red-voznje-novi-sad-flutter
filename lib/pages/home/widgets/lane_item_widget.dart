@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../lanes/model/selected_lane.dart';
+import '../model/bus_schedule_response.dart';
 import '../state/bus_schedule_notifier.dart';
 
 class LaneItemWidget extends ConsumerStatefulWidget {
@@ -24,18 +25,56 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
   @override
   Widget build(BuildContext context) {
     final busSchedulesMap = ref.watch(busScheduleProvider);
-    final busSchedules = busSchedulesMap[widget.lane.lane.id];
+    final busScheduleState = busSchedulesMap[widget.lane.lane.id];
 
-    if (busSchedules == null) {
-      return const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
+    if (busScheduleState == null) {
+      // Show progress indicator while fetching data
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
+          child: SizedBox(
+            height: 100,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ),
+        ),
       );
     }
 
-    final filteredSchedules = busSchedules
-        .where((schedule) => schedule.dan == widget.dayType)
-        .toList();
+    if (busScheduleState.error != null) {
+      // Display error message
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
+          child: SizedBox(
+            height: 100,
+            child: Center(
+              child: Text(
+                textAlign: TextAlign.center,
+                'Došlo je do greške za liniju:\n${widget.lane.lane.broj} ${widget.lane.lane.linija}',
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+
+    final busSchedules = busScheduleState.schedules ?? [];
+    final filteredSchedules = busSchedules.where((schedule) => schedule.dan == widget.dayType).toList();
 
     if (filteredSchedules.isEmpty) {
       return const SizedBox.shrink();
@@ -84,12 +123,14 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                          child: _buildScheduleColumn('Linija A',
-                              schedule.rasporedA, schedule.linijaA, context)),
+                        child: _buildScheduleColumn(
+                            'Linija A', schedule.rasporedA, schedule.linijaA, context),
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
-                          child: _buildScheduleColumn('Linija B',
-                              schedule.rasporedB, schedule.linijaB, context)),
+                        child: _buildScheduleColumn(
+                            'Linija B', schedule.rasporedB, schedule.linijaB, context),
+                      ),
                     ],
                   ),
                 ],
@@ -101,6 +142,8 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
     );
   }
 
+
+
   Widget _buildScheduleColumn(String title, Map<String, List<String>> raspored,
       String linija, BuildContext context) {
     final String currentHour = DateFormat('HH').format(DateTime.now());
@@ -108,29 +151,22 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
     final entries = raspored.entries.toList();
 
     // Determine the position of the current hour if it exists
-    final currentIndex =
-        entries.indexWhere((entry) => entry.key == currentHour);
+    final currentIndex = entries.indexWhere((entry) => entry.key == currentHour);
 
     // Logic to select 3 entries based on current hour
     List<MapEntry<String, List<String>>> displayEntries;
     if (_isExpanded) {
-      // Show all entries when expanded
       displayEntries = entries;
     } else {
       if (entries.length <= 3) {
-        // If there are 3 or fewer entries, just show them
         displayEntries = entries;
       } else if (currentIndex == -1) {
-        // If the current hour is not found, just show the first 3 entries
         displayEntries = entries.take(3).toList();
       } else if (currentIndex == 0) {
-        // If the current hour is the first entry, show the first 3
         displayEntries = entries.take(3).toList();
       } else if (currentIndex == entries.length - 1) {
-        // If the current hour is the last entry, show the last 3
         displayEntries = entries.skip(entries.length - 3).toList();
       } else {
-        // Otherwise, show the current hour in the middle
         displayEntries = entries.sublist(currentIndex - 1, currentIndex + 2);
       }
     }
