@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
+
+import '../lanes/model/selected_lane.dart'; // Import your provider
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Watch the selected lanes
+    final selectedLanes = ref.watch(selectedLanesProvider);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -36,9 +42,9 @@ class HomePage extends ConsumerWidget {
         body: Container(
           child: TabBarView(
             children: [
-              _buildTabPage(),
-              _buildTabPage(),
-              _buildTabPage(),
+              _buildTabContent(selectedLanes, 'Radni dan'),
+              _buildTabContent(selectedLanes, 'Subota'),
+              _buildTabContent(selectedLanes, 'Nedelja'),
             ],
           ),
         ),
@@ -53,7 +59,29 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildTabPage() {
+  Widget _buildTabContent(List<SelectedLane> selectedLanes, String dayType) {
+    // Show the placeholder view if no lanes are selected
+    if (selectedLanes.isEmpty) {
+      return _buildTabPageNoLanes();
+    } else {
+      // Otherwise, show the selected lanes in a ListView
+      return ListView.builder(
+        itemCount: selectedLanes.length,
+        itemBuilder: (context, index) {
+          final lane = selectedLanes[index];
+          return ListTile(
+            title: Text(
+              '${lane.lane.broj} - ${lane.lane.linija}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text('Type: ${lane.type}'),
+          );
+        },
+      );
+    }
+  }
+
+  Widget _buildTabPageNoLanes() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
