@@ -14,7 +14,6 @@ class BusScheduleService extends BaseClient {
         if (response is String) {
           return List<Map<String, dynamic>>.from(jsonDecode(response));
         } else if (response is List) {
-          // Handle case where response is already a list
           return List<Map<String, dynamic>>.from(response);
         } else {
           throw Exception('Unexpected response format');

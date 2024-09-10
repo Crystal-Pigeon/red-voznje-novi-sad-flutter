@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_voznje_novi_sad_flutter/pages/home/model/bus_schedule_response.dart';
-
 import '../../lanes/model/selected_lane.dart';
-import '../service/bus_schedule_service.dart';
+import '../state/bus_schedule_notifier.dart';
 
-class LaneItemWidget extends ConsumerStatefulWidget {
+class LaneItemWidget extends ConsumerWidget {
   final SelectedLane lane;
-  final String dayType; // To filter the data for the specific day
+  final String dayType;
 
   const LaneItemWidget({
     super.key,
@@ -16,57 +14,27 @@ class LaneItemWidget extends ConsumerStatefulWidget {
   });
 
   @override
-  _LaneItemWidgetState createState() => _LaneItemWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final busSchedulesMap = ref.watch(busScheduleProvider);
+    final busSchedules = busSchedulesMap[lane.lane.id];
 
-class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
-  bool _loading = true;
-  List<BusSchedule> _busSchedules = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchBusSchedule();
-  }
-
-  Future<void> _fetchBusSchedule() async {
-    final busSchedules = await BusScheduleService().getBusSchedule(
-      context,
-      widget.lane.lane.id,
-      widget.lane.type,
-    );
-
-    if (busSchedules != null) {
-      setState(() {
-        _busSchedules = busSchedules
-            .map((json) => BusSchedule.fromJson(json))
-            .toList(); // Parse the list of schedules
-        _loading = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_loading) {
+    if (busSchedules == null) {
       return const Padding(
         padding: EdgeInsets.all(8.0),
         child: CircularProgressIndicator(),
       );
     }
 
-    // Filter the schedules based on the dayType
-    final filteredSchedules = _busSchedules.where((schedule) => schedule.dan == widget.dayType).toList();
+    final filteredSchedules = busSchedules.where((schedule) => schedule.dan == dayType).toList();
 
     if (filteredSchedules.isEmpty) {
-      return const SizedBox.shrink(); // No schedules for the dayType
+      return const SizedBox.shrink(); // Hide if no schedules match the dayType
     }
 
-    // Display the filtered schedule(s)
     return Column(
       children: filteredSchedules.map((schedule) {
         return ListTile(
-          title: Text('${schedule.broj} - ${schedule.naziv}'),
+          title: Text('${schedule.naziv} (${schedule.broj})'),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
