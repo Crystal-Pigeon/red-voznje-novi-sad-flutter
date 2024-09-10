@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../splash_screen/shared/services/network/base_client.dart';
+import '../../../shared/services/network/base_client.dart';
 import '../model/lane.dart';
 
 class LanesService extends BaseClient {
