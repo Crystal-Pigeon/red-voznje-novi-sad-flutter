@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Red Voznje</string>
+	<string>Red Vožnje</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>CFBundleExecutable</key>
