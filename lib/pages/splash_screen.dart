@@ -69,5 +69,5 @@ Future<void> _goToHomePage(BuildContext context) async {
   await Future.delayed(const Duration(
     milliseconds: 1000 ,
   ));
-  // context.goNamed('homePage');
+  context.goNamed('homePage');
 }
