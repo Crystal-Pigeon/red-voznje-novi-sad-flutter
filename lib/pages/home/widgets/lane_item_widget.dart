@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../lanes/model/selected_lane.dart';
+import '../model/bus_schedule_response.dart';
 import '../state/bus_schedule_notifier.dart';
 
 class LaneItemWidget extends ConsumerStatefulWidget {
@@ -49,7 +50,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
 
     if (busScheduleState.error != null) {
       return Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(8.0),
         child: Card(
           color: Theme.of(context).colorScheme.surfaceContainer,
           shape: RoundedRectangleBorder(
@@ -59,9 +60,12 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
           child: SizedBox(
             height: 100,
             child: Center(
-              child: Text(
-                textAlign: TextAlign.center,
-                'Došlo je do greške za liniju:\n${widget.lane.lane.broj} ${widget.lane.lane.linija}',
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'Došlo je do greške za liniju:\n${widget.lane.lane.broj} ${widget.lane.lane.linija}',
+                ),
               ),
             ),
           ),
@@ -100,10 +104,9 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                   children: [
                     Row(
                       children: [
-                        // Circle with the line number
                         Container(
-                          width: 30, // Adjust the size as needed
-                          height: 30,
+                          width: 40, // Adjust the size as needed
+                          height: 40,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.onPrimary, // Circle color
                             shape: BoxShape.circle,
@@ -131,19 +134,11 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                     ),
 
                     const SizedBox(height: 10),
+
+                    // Dynamically build columns based on the available schedules
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: _buildScheduleColumn(
-                              'Linija A', schedule.rasporedA, schedule.linijaA, context),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildScheduleColumn(
-                              'Linija B', schedule.rasporedB, schedule.linijaB, context),
-                        ),
-                      ],
+                      children: _buildScheduleColumns(schedule, context),
                     ),
                   ],
                 ),
@@ -155,16 +150,51 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
     );
   }
 
-  Widget _buildScheduleColumn(String title, Map<String, List<String>> raspored,
-      String linija, BuildContext context) {
-    final String currentHour = DateFormat('HH').format(DateTime.now());
+  // Build columns based on available schedules (A, B, or single raspored)
+  List<Widget> _buildScheduleColumns(BusSchedule schedule, BuildContext context) {
+    final List<Widget> columns = [];
 
+    // If there's a single raspored, show one column
+    if (schedule.raspored != null) {
+      columns.add(
+        Expanded(
+          child: _buildScheduleColumn('Linija', schedule.raspored!, schedule.linija ?? 'Linija', context),
+        ),
+      );
+    } else {
+      // Show two columns if rasporedA and rasporedB are available
+      if (schedule.rasporedA != null) {
+        columns.add(
+          Expanded(
+            child: _buildScheduleColumn('Linija A', schedule.rasporedA!, schedule.linijaA ?? 'Linija A', context),
+          ),
+        );
+      }
+      if (schedule.rasporedB != null) {
+        columns.add(const SizedBox(width: 16)); // Spacing between columns
+        columns.add(
+          Expanded(
+            child: _buildScheduleColumn('Linija B', schedule.rasporedB!, schedule.linijaB ?? 'Linija B', context),
+          ),
+        );
+      }
+    }
+
+    return columns;
+  }
+
+  Widget _buildScheduleColumn(String title, Map<String, List<String>>? raspored, String linija, BuildContext context) {
+    if (raspored == null) {
+      return const SizedBox.shrink();
+    }
+
+    final String currentHour = DateFormat('HH').format(DateTime.now());
     final entries = raspored.entries.toList();
 
     // Determine the position of the current hour if it exists
     final currentIndex = entries.indexWhere((entry) => entry.key == currentHour);
 
-    // Logic to select 3 entries based on current hour
+    // Logic to select 3 entries based on the current hour
     List<MapEntry<String, List<String>>> displayEntries;
     if (_isExpanded) {
       displayEntries = entries;
@@ -218,7 +248,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
               ),
             ),
           );
-        }),
+        }).toList(),
       ],
     );
   }
@@ -230,5 +260,4 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
   String _extractRouteName(String naziv) {
     return naziv.substring(naziv.indexOf(' ') + 1).trim();
   }
-
 }
