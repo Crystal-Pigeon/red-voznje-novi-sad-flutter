@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 const defaultPrimaryColor = Color(0xFF0066CC);
-const backgroundColor = Color.fromRGBO(240, 243, 244, 1.0);
-const onBackgroundColor = Color.fromRGBO(51, 51, 51, 1);
+const backgroundColor = Color(0xFFE6E6E6);
 const surfaceContainerColor = Color.fromRGBO(255, 255, 255, 1.0);
 const onSurfaceColor = Color.fromRGBO(51, 51, 51, 1);
-const dividerColor = Color.fromRGBO(218, 218, 218, 1);
-const textColor = Color.fromRGBO(47, 41, 41, 1.0);
+const dividerColor = Color(0xFFE6E6E6);
+const textColor = Color(0xFF242429);
+const secondaryText = Color(0xFF6E6D6C);
 
 ThemeData lightTheme() {
   return ThemeData(
     brightness: Brightness.light,
     primaryColor: defaultPrimaryColor,
     colorScheme: const ColorScheme.light(
+      onTertiary: secondaryText,
       onPrimary: defaultPrimaryColor,
       primary: defaultPrimaryColor,
       surface: backgroundColor,
@@ -29,7 +30,6 @@ ThemeData lightTheme() {
         )
         .apply(
           bodyColor: textColor,
-          displayColor: onBackgroundColor,
         ),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           backgroundColor: defaultPrimaryColor,
@@ -46,7 +46,7 @@ ThemeData lightTheme() {
     dividerTheme: ThemeData.light().dividerTheme.copyWith(color: dividerColor),
     listTileTheme: ThemeData.light().listTileTheme.copyWith(
           contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-          selectedColor: onBackgroundColor,
+
         ),
     dialogTheme: ThemeData.light().dialogTheme.copyWith(
           surfaceTintColor: Colors.transparent,
@@ -55,9 +55,8 @@ ThemeData lightTheme() {
         ),
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-      foregroundColor: onBackgroundColor,
       backgroundColor: dividerColor,
-      shape: RoundedRectangleBorder(),
+      shape: const RoundedRectangleBorder(),
     )),
   );
 }

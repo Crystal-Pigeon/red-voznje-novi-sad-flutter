@@ -30,15 +30,15 @@ class BaseClient {
       return checkResponse(response, context);
     } on TimeoutException catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('A timeout exception')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('A timeout exception', textAlign: TextAlign.center,)));
       return null;
     } on SocketException {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Proverite internet konekciju')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Proverite internet konekciju', textAlign: TextAlign.center,)));
       return null;
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Došlo je do greške: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Došlo je do greške: $e', textAlign: TextAlign.center,)));
       return null;
     }
   }
@@ -48,11 +48,11 @@ class BaseClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Greška: ${response.statusCode}')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Greška: ${response.statusCode}', textAlign: TextAlign.center,)));
         return null;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to decode response: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to decode response: $e', textAlign: TextAlign.center,)));
       return null;
     }
   }

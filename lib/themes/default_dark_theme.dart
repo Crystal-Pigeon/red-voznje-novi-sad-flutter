@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-const accentColor = Color(0xFF0066CC);
-const defaultPrimaryColor = Color(0xFF28272A);
-const backgroundColor = Color.fromRGBO(47, 50, 52, 1.0);
+const defaultPrimaryColor = Color(0xFF0066CC);
+const backgroundColor = Color(0xFF242429);
 const onBackgroundColor = Color.fromRGBO(142, 142, 147, 1);
-const surfaceContainerColor = Color.fromRGBO(64, 67, 68, 1.0);
+const surfaceContainerColor = Color(0xFF2F2F34);
 const onSurfaceColor = Colors.white;
-const dividerColor = Color.fromRGBO(142, 142, 147, 1);
+const dividerColor = Color(0xFF3A3A3E);
+const secondaryText = Color(0xFF828180);
 
 ThemeData darkTheme() {
   return ThemeData(
       brightness: Brightness.dark,
       primaryColor: defaultPrimaryColor,
       colorScheme: const ColorScheme.dark(
-        onPrimary: accentColor,
+        onTertiary: secondaryText,
+        onPrimary: defaultPrimaryColor,
         primary: defaultPrimaryColor,
         surface: backgroundColor,
         surfaceContainer: surfaceContainerColor,
@@ -28,7 +29,6 @@ ThemeData darkTheme() {
                 ),
           )
           .apply(
-            bodyColor: Colors.white,
             displayColor: Colors.white,
           ),
       appBarTheme: ThemeData.dark().appBarTheme.copyWith(
@@ -59,11 +59,5 @@ ThemeData darkTheme() {
         shape: const RoundedRectangleBorder(),
       )
     ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: accentColor,
-      ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: accentColor
-    )
   );
 }

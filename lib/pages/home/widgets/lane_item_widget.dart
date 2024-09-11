@@ -217,7 +217,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       children: [
         Text(
           linija.trim(),
-          style: const TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onTertiary),
         ),
         const SizedBox(height: 4),
         const Divider(height: 1),
@@ -236,7 +236,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: time == currentHour
-                          ? Colors.orange
+                          ? Theme.of(context).primaryColor
                           : Theme.of(context).textTheme.titleMedium?.color,
                     ),
                   ),
