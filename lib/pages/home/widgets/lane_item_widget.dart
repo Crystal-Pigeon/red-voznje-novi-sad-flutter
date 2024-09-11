@@ -49,7 +49,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
 
     if (busScheduleState.error != null) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(20.0),
         child: Card(
           color: Theme.of(context).colorScheme.surfaceContainer,
           shape: RoundedRectangleBorder(
@@ -69,7 +69,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       );
     }
 
-
     final busSchedules = busScheduleState.schedules ?? [];
     final filteredSchedules = busSchedules.where((schedule) => schedule.dan == widget.dayType).toList();
 
@@ -82,55 +81,72 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       children: filteredSchedules.map((schedule) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Card(
-            color: Theme.of(context).colorScheme.surfaceContainer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          schedule.naziv,
-                          style: const TextStyle(
-                            fontSize: 14,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Card(
+              color: Theme.of(context).colorScheme.surfaceContainer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        // Circle with the line number
+                        Container(
+                          width: 30, // Adjust the size as needed
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onPrimary, // Circle color
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _extractLineNumber(schedule.naziv),
+                              style: const TextStyle(
+                                color: Colors.white, // Text inside the circle
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(_isExpanded
-                            ? Icons.expand_less
-                            : Icons.expand_more),
-                        onPressed: () {
-                          setState(() {
-                            _isExpanded = !_isExpanded;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: _buildScheduleColumn(
-                            'Linija A', schedule.rasporedA, schedule.linijaA, context),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _buildScheduleColumn(
-                            'Linija B', schedule.rasporedB, schedule.linijaB, context),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(width: 8), // Spacing between the circle and text
+                        Expanded(
+                          child: Text(
+                            _extractRouteName(schedule.naziv), // Route text
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: _buildScheduleColumn(
+                              'Linija A', schedule.rasporedA, schedule.linijaA, context),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildScheduleColumn(
+                              'Linija B', schedule.rasporedB, schedule.linijaB, context),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -138,8 +154,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       }).toList(),
     );
   }
-
-
 
   Widget _buildScheduleColumn(String title, Map<String, List<String>> raspored,
       String linija, BuildContext context) {
@@ -204,8 +218,17 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
               ),
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
+
+  String _extractLineNumber(String naziv) {
+    return naziv.split(' ')[0];
+  }
+
+  String _extractRouteName(String naziv) {
+    return naziv.substring(naziv.indexOf(' ') + 1).trim();
+  }
+
 }
