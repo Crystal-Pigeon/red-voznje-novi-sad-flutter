@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const accentColor = Color(0xFF016AFA);
+const accentColor = Color(0xFF0066CC);
 const defaultPrimaryColor = Color(0xFF28272A);
 const backgroundColor = Color.fromRGBO(47, 50, 52, 1.0);
 const onBackgroundColor = Color.fromRGBO(142, 142, 147, 1);

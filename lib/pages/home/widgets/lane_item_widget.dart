@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../lanes/model/selected_lane.dart';
-import '../model/bus_schedule_response.dart';
 import '../state/bus_schedule_notifier.dart';
 
 class LaneItemWidget extends ConsumerStatefulWidget {
@@ -28,7 +27,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
     final busScheduleState = busSchedulesMap[widget.lane.lane.id];
 
     if (busScheduleState == null) {
-      // Show progress indicator while fetching data
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -50,7 +48,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
     }
 
     if (busScheduleState.error != null) {
-      // Display error message
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -118,7 +115,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

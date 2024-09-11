@@ -31,9 +31,9 @@ class HomePage extends ConsumerWidget {
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.settings),
+              icon: const Icon(Icons.question_mark_sharp),
               onPressed: () {
-                context.pushNamed('settings');
+                context.pushNamed('info');
               },
             ),
           ],

@@ -14,9 +14,9 @@ class SettingsPage extends ConsumerWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
-        children: const [
+        children: [
           // Language Setting
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -29,7 +29,7 @@ class SettingsPage extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    'Engleski',
+                    'Srpski',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
@@ -47,9 +47,9 @@ class SettingsPage extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           // Theme Setting
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -80,7 +80,7 @@ class SettingsPage extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           // Support Setting
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +88,7 @@ class SettingsPage extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Podrska',
                     style: TextStyle(
                       fontSize: 16,
@@ -96,12 +96,12 @@ class SettingsPage extends ConsumerWidget {
                   ),
                   Icon(
                     CupertinoIcons.forward, // Forward icon
-                    color: Colors.black,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
                   ),
                 ],
               ),
-              SizedBox(height: 4),
-              Text(
+              const SizedBox(height: 4),
+              const Text(
                 'Otvorite ekran za podrsku',
                 style: TextStyle(
                   fontSize: 12,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const defaultPrimaryColor = Color(0xFF016AFA);
+const defaultPrimaryColor = Color(0xFF0066CC);
 const backgroundColor = Color.fromRGBO(240, 243, 244, 1.0);
 const onBackgroundColor = Color.fromRGBO(51, 51, 51, 1);
 const surfaceContainerColor = Color.fromRGBO(255, 255, 255, 1.0);

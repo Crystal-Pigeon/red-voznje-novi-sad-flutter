@@ -1,6 +1,5 @@
 name: red_voznje_novi_sad_flutter
-description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+description: "Mobilna aplikacija sa redovima javnog prevoza Novi Sad"
 
 version: 1.0.0+1
 
@@ -11,15 +10,36 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^14.0.2
-  flutter_svg: ^1.0.0
+  flutter_svg: ^2.0.10+1
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
-  http: ^0.13.5
+  http: ^1.2.2
   json_annotation: ^4.8.0
   shared_preferences: ^2.1.0
   collection: ^1.15.0
-  intl: ^0.17.0
+  intl: ^0.19.0
+  url_launcher: ^6.0.20
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.0.7
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: lib/assets/icon.png
+  android: true
+  ios: true
+
+fonts:
+  - family: Manrope
+    fonts:
+      - asset: fonts/Manrope-Regular.ttf
+      - asset: fonts/Manrope-Bold.ttf
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/icon.png"
+  remove_alpha_ios: true
 
 dev_dependencies:
   flutter_test:
