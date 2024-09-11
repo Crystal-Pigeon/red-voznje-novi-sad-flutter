@@ -10,54 +10,41 @@ const secondaryText = Color(0xFF828180);
 
 ThemeData darkTheme() {
   return ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: defaultPrimaryColor,
-      colorScheme: const ColorScheme.dark(
-        onTertiary: secondaryText,
-        onPrimary: defaultPrimaryColor,
-        primary: defaultPrimaryColor,
-        surface: backgroundColor,
-        surfaceContainer: surfaceContainerColor,
-        onSurface: onSurfaceColor,
-      ),
-      scaffoldBackgroundColor: backgroundColor,
-      textTheme: ThemeData.dark()
-          .textTheme
-          .copyWith(
-            titleLarge: ThemeData.dark().textTheme.titleLarge?.copyWith(
-                  fontSize: 21,
-                ),
-          )
-          .apply(
-            displayColor: Colors.white,
-          ),
-      appBarTheme: ThemeData.dark().appBarTheme.copyWith(
-            backgroundColor: defaultPrimaryColor,
-            foregroundColor: Colors.white,
-            shadowColor: Colors.black,
-            elevation: 4,
-            surfaceTintColor: Colors.transparent,
-            titleTextStyle: ThemeData.dark()
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontSize: 16, color: Colors.white),
-          ),
-      dividerColor: dividerColor,
-      dividerTheme: ThemeData.dark().dividerTheme.copyWith(color: dividerColor),
-      listTileTheme: ThemeData.dark().listTileTheme.copyWith(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-            selectedColor: Colors.white,
-          ),
+    fontFamily: 'Manrope',
+    brightness: Brightness.dark,
+    primaryColor: defaultPrimaryColor,
+    colorScheme: const ColorScheme.dark(
+      onTertiary: secondaryText,
+      onPrimary: defaultPrimaryColor,
+      primary: defaultPrimaryColor,
+      surface: backgroundColor,
+      surfaceContainer: surfaceContainerColor,
+      onSurface: onSurfaceColor,
+    ),
+    scaffoldBackgroundColor: backgroundColor,
+    appBarTheme: ThemeData.dark().appBarTheme.copyWith(
+          backgroundColor: defaultPrimaryColor,
+          foregroundColor: Colors.white,
+          shadowColor: Colors.black,
+          elevation: 4,
+          surfaceTintColor: Colors.transparent,
+          titleTextStyle: ThemeData.dark().textTheme.titleLarge?.copyWith(
+              fontSize: 16, color: Colors.white, fontFamily: 'Manrope'),
+        ),
+    dividerTheme: ThemeData.dark().dividerTheme.copyWith(color: dividerColor),
+    listTileTheme: ThemeData.dark().listTileTheme.copyWith(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+          selectedColor: Colors.white,
+        ),
     dialogTheme: ThemeData.dark().dialogTheme.copyWith(
-      surfaceTintColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(),
-      actionsPadding: EdgeInsets.zero,
-    ),
+          surfaceTintColor: Colors.transparent,
+          shape: const RoundedRectangleBorder(),
+          actionsPadding: EdgeInsets.zero,
+        ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.white,
-        shape: const RoundedRectangleBorder(),
-      )
-    ),
+        style: TextButton.styleFrom(
+      foregroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(),
+    )),
   );
 }

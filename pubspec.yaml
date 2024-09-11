@@ -32,8 +32,8 @@ flutter_native_splash:
 fonts:
   - family: Manrope
     fonts:
-      - asset: fonts/Manrope-Regular.ttf
-      - asset: fonts/Manrope-Bold.ttf
+      - asset: lib/assets/fonts/Manrope-Regular.ttf
+      - asset: lib/assets/fonts/Manrope-Bold.ttf
 
 flutter_icons:
   android: true

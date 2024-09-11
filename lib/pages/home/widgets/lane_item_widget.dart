@@ -126,6 +126,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                           child: Text(
                             _extractRouteName(schedule.naziv), // Route text
                             style: const TextStyle(
+                              fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
@@ -212,11 +213,13 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       }
     }
 
+    String trimmedLine = linija.replaceFirst(RegExp(r'[A|B]:\s*'), '');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          linija.trim(),
+          trimmedLine.trim(),
           style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onTertiary),
         ),
         const SizedBox(height: 4),

@@ -10,6 +10,7 @@ const secondaryText = Color(0xFF6E6D6C);
 
 ThemeData lightTheme() {
   return ThemeData(
+    fontFamily: 'Manrope',
     brightness: Brightness.light,
     primaryColor: defaultPrimaryColor,
     colorScheme: const ColorScheme.light(
@@ -21,16 +22,6 @@ ThemeData lightTheme() {
       onSurface: onSurfaceColor,
     ),
     scaffoldBackgroundColor: backgroundColor,
-    textTheme: ThemeData.light()
-        .textTheme
-        .copyWith(
-          titleLarge: ThemeData.light().textTheme.titleLarge?.copyWith(
-                fontSize: 21,
-              ),
-        )
-        .apply(
-          bodyColor: textColor,
-        ),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           backgroundColor: defaultPrimaryColor,
           foregroundColor: Colors.white,
@@ -42,11 +33,9 @@ ThemeData lightTheme() {
               .titleLarge
               ?.copyWith(fontSize: 16, color: Colors.white),
         ),
-    dividerColor: dividerColor,
     dividerTheme: ThemeData.light().dividerTheme.copyWith(color: dividerColor),
     listTileTheme: ThemeData.light().listTileTheme.copyWith(
           contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-
         ),
     dialogTheme: ThemeData.light().dialogTheme.copyWith(
           surfaceTintColor: Colors.transparent,
