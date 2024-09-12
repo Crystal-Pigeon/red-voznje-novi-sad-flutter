@@ -185,26 +185,29 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
     }
 
     final String currentHour = DateFormat('HH').format(DateTime.now());
-    final entries = raspored.entries.toList();
+
+    // Sort the entries by the hour (key)
+    final sortedEntries = raspored.entries.toList()
+      ..sort((a, b) => int.parse(a.key).compareTo(int.parse(b.key)));
 
     // Determine the position of the current hour if it exists
-    final currentIndex = entries.indexWhere((entry) => entry.key == currentHour);
+    final currentIndex = sortedEntries.indexWhere((entry) => entry.key == currentHour);
 
     // Logic to select 3 entries based on the current hour
     List<MapEntry<String, List<String>>> displayEntries;
     if (_isExpanded) {
-      displayEntries = entries;
+      displayEntries = sortedEntries;
     } else {
-      if (entries.length <= 3) {
-        displayEntries = entries;
+      if (sortedEntries.length <= 3) {
+        displayEntries = sortedEntries;
       } else if (currentIndex == -1) {
-        displayEntries = entries.take(3).toList();
+        displayEntries = sortedEntries.take(3).toList();
       } else if (currentIndex == 0) {
-        displayEntries = entries.take(3).toList();
-      } else if (currentIndex == entries.length - 1) {
-        displayEntries = entries.skip(entries.length - 3).toList();
+        displayEntries = sortedEntries.take(3).toList();
+      } else if (currentIndex == sortedEntries.length - 1) {
+        displayEntries = sortedEntries.skip(sortedEntries.length - 3).toList();
       } else {
-        displayEntries = entries.sublist(currentIndex - 1, currentIndex + 2);
+        displayEntries = sortedEntries.sublist(currentIndex - 1, currentIndex + 2);
       }
     }
 
