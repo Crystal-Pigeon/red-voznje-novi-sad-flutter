@@ -1,0 +1,58 @@
+name: red_voznje_novi_sad_flutter
+description: "Mobilna aplikacija sa redovima javnog prevoza Novi Sad"
+
+version: 1.2.0+1
+
+environment:
+  sdk: '>=3.5.0-222.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^14.0.2
+  flutter_svg: ^2.0.10+1
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  http: ^1.2.2
+  json_annotation: ^4.8.0
+  shared_preferences: ^2.1.0
+  collection: ^1.15.0
+  intl: ^0.19.0
+  url_launcher: ^6.0.20
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.0.7
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: lib/assets/icon.png
+  android: true
+  ios: true
+
+fonts:
+  - family: Manrope
+    fonts:
+      - asset: lib/assets/fonts/Manrope-Regular.ttf
+      - asset: lib/assets/fonts/Manrope-Bold.ttf
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/icon.png"
+  remove_alpha_ios: true
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  riverpod_generator: ^2.4.2
+  build_runner: ^2.4.11
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.12
+  json_serializable: ^6.6.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - lib/assets/
