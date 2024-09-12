@@ -25,8 +25,7 @@ ThemeData lightTheme() {
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           backgroundColor: defaultPrimaryColor,
           foregroundColor: Colors.white,
-          shadowColor: Colors.black,
-          elevation: 4,
+          elevation: 0,
           surfaceTintColor: Colors.transparent,
           titleTextStyle: ThemeData.light()
               .textTheme
@@ -53,6 +52,9 @@ ThemeData lightTheme() {
     ),
     cardTheme: const CardTheme(
       elevation: 2,
+    ),
+    tabBarTheme: const TabBarTheme(
+      dividerColor: Colors.transparent,
     ),
   );
 }

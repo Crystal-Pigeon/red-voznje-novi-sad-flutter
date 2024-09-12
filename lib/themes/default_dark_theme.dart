@@ -25,8 +25,7 @@ ThemeData darkTheme() {
     appBarTheme: ThemeData.dark().appBarTheme.copyWith(
           backgroundColor: defaultPrimaryColor,
           foregroundColor: Colors.white,
-          shadowColor: Colors.black,
-          elevation: 4,
+          elevation: 0,
           surfaceTintColor: Colors.transparent,
           titleTextStyle: ThemeData.dark().textTheme.titleLarge?.copyWith(
               fontSize: 16, color: Colors.white, fontFamily: 'Manrope'),
@@ -52,6 +51,9 @@ ThemeData darkTheme() {
     ),
     cardTheme: const CardTheme(
       elevation: 2,
+    ),
+    tabBarTheme: const TabBarTheme(
+      dividerColor: Colors.transparent,
     ),
   );
 }
