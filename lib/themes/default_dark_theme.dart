@@ -46,5 +46,12 @@ ThemeData darkTheme() {
       foregroundColor: Colors.white,
       shape: const RoundedRectangleBorder(),
     )),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      elevation: 2,
+      highlightElevation: 1,
+    ),
+    cardTheme: const CardTheme(
+      elevation: 2,
+    ),
   );
 }
