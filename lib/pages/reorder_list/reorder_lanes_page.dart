@@ -21,10 +21,11 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        ref.read(selectedLanesProvider.notifier).setReorderedLanes(reorderedLanes);
-        return true;
+    return PopScope(
+      onPopInvokedWithResult: (bool didPop, dynamic result) {
+        if (didPop) {
+          ref.read(selectedLanesProvider.notifier).setReorderedLanes(reorderedLanes);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
