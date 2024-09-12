@@ -40,7 +40,7 @@ class LanesPage extends ConsumerWidget {
     final lanes = lanesMap[rv];
 
     if (lanes == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator.adaptive());
     } else {
       final selectedLanes = ref.watch(selectedLanesProvider);
 

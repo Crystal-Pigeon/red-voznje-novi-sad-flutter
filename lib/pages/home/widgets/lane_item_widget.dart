@@ -36,12 +36,10 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 4,
-          child: SizedBox(
+          child: const SizedBox(
             height: 100,
             child: Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              child: CircularProgressIndicator.adaptive(),
             ),
           ),
         ),
