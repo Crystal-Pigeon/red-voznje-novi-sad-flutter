@@ -35,7 +35,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 4,
           child: const SizedBox(
             height: 100,
             child: Center(
@@ -54,7 +53,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 4,
           child: SizedBox(
             height: 100,
             child: Center(
@@ -94,7 +92,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(

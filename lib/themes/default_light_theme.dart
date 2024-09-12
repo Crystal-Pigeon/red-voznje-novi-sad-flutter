@@ -47,5 +47,12 @@ ThemeData lightTheme() {
       backgroundColor: dividerColor,
       shape: const RoundedRectangleBorder(),
     )),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      elevation: 2,
+      highlightElevation: 1,
+    ),
+    cardTheme: const CardTheme(
+      elevation: 2,
+    ),
   );
 }
