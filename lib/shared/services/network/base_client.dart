@@ -23,22 +23,36 @@ class BaseClient {
 
     debugPrint("GET url: $url");
     try {
-      var response = await client.get(url, headers: requestHeaders);
+      var response = await client
+          .get(url, headers: requestHeaders)
+          .timeout(const Duration(seconds: 5)); // Set timeout to 5 seconds
       debugPrint("status code: ${response.statusCode}");
       if (!context.mounted) return;
 
       return checkResponse(response, context);
     } on TimeoutException catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('A timeout exception', textAlign: TextAlign.center,)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Došlo je do vremenskog ograničenja. Pokušajte ponovo.', textAlign: TextAlign.center),
+        ),
+      );
       return null;
     } on SocketException {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Proverite internet konekciju', textAlign: TextAlign.center,)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please check your internet connection.', textAlign: TextAlign.center),
+        ),
+      );
       return null;
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Došlo je do greške: $e', textAlign: TextAlign.center,)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred: $e', textAlign: TextAlign.center),
+        ),
+      );
       return null;
     }
   }
@@ -48,11 +62,19 @@ class BaseClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Greška: ${response.statusCode}', textAlign: TextAlign.center,)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${response.statusCode}', textAlign: TextAlign.center),
+          ),
+        );
         return null;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to decode response: $e', textAlign: TextAlign.center,)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to decode response: $e', textAlign: TextAlign.center),
+        ),
+      );
       return null;
     }
   }

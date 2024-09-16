@@ -60,7 +60,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   textAlign: TextAlign.center,
-                  'Došlo je do greške za liniju:\n${widget.lane.lane.broj} ${widget.lane.lane.linija}',
+                  'Nema informacija za liniju:\n${widget.lane.lane.broj} ${widget.lane.lane.linija}',
                 ),
               ),
             ),
