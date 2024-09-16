@@ -40,59 +40,92 @@ class LanesPage extends ConsumerWidget {
     final lanesMap = ref.watch(lanesProvider);
     final lanes = lanesMap[rv];
 
-    if (lanes == null) {
-      // Show loading spinner initially if data isn't fetched yet
-      return const Center(child: CircularProgressIndicator.adaptive());
-    } else {
-      final selectedLanes = ref.watch(selectedLanesProvider);
+    return RefreshIndicator(
+      onRefresh: () async {
+        // Clear lanes and re-fetch them on pull to refresh
+        ref.read(lanesProvider.notifier).clearLanes();
+        await ref.read(lanesProvider.notifier).fetchLanes(context, rv);
+      },
+      child: lanes == null
+          ? const Center(child: CircularProgressIndicator.adaptive())
+          : lanes.isEmpty
+          ? _buildNoInternetMessage()
+          : _buildLanesList(context, ref, lanes, rv),
+    );
+  }
 
-      return RefreshIndicator(
-        onRefresh: () async {
-          // Clear lanes and re-fetch them on pull to refresh
-          ref.read(lanesProvider.notifier).clearLanes();
-          await ref.read(lanesProvider.notifier).fetchLanes(context, rv);
-        },
-        child: ListView.builder(
-          itemCount: lanes.length,
-          itemBuilder: (context, index) {
-            final lane = lanes[index];
-            final isSelected = selectedLanes.any(
-                  (selectedLane) => selectedLane.lane.id == lane.id && selectedLane.type == rv,
-            );
-
-            return Column(
-              children: [
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                  visualDensity: VisualDensity.compact,
-                  title: Row(
-                    children: [
-                      Text(
-                        lane.broj,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          lane.linija,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: isSelected
-                      ? Icon(Icons.check, color: Theme.of(context).colorScheme.onPrimary)
-                      : null,
-                  onTap: () {
-                    ref.read(selectedLanesProvider.notifier).toggleLaneSelection(lane, rv);
-                  },
-                ),
-                const Divider(height: 1),  // Reduced height for the divider
-              ],
-            );
-          },
+  Widget _buildNoInternetMessage() {
+    return ListView( // Wrapping in ListView to allow pull to refresh
+      children: const [
+        SizedBox(height: 200), // Adjust as necessary for centering
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.wifi_off,
+              size: 100,
+              color: Colors.grey,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Proverite internet konekciju',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+          ],
         ),
-      );
-    }
+      ],
+    );
+  }
+
+  Widget _buildLanesList(
+      BuildContext context, WidgetRef ref, List lanes, String rv) {
+    final selectedLanes = ref.watch(selectedLanesProvider);
+
+    return ListView.builder(
+      itemCount: lanes.length,
+      itemBuilder: (context, index) {
+        final lane = lanes[index];
+        final isSelected = selectedLanes.any(
+              (selectedLane) =>
+          selectedLane.lane.id == lane.id && selectedLane.type == rv,
+        );
+
+        return Column(
+          children: [
+            ListTile(
+              contentPadding:
+              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+              visualDensity: VisualDensity.compact,
+              title: Row(
+                children: [
+                  Text(
+                    lane.broj,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      lane.linija,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+              trailing: isSelected
+                  ? Icon(Icons.check,
+                  color: Theme.of(context).colorScheme.onPrimary)
+                  : null,
+              onTap: () {
+                ref
+                    .read(selectedLanesProvider.notifier)
+                    .toggleLaneSelection(lane, rv);
+              },
+            ),
+            const Divider(height: 1), // Reduced height for the divider
+          ],
+        );
+      },
+    );
   }
 }

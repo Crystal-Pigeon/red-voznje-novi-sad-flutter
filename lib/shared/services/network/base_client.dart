@@ -30,11 +30,11 @@ class BaseClient {
       return checkResponse(response, context);
     } on TimeoutException catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('A timeout exception', textAlign: TextAlign.center,)));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('A timeout exception', textAlign: TextAlign.center,)));
       return null;
     } on SocketException {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Proverite internet konekciju', textAlign: TextAlign.center,)));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Proverite internet konekciju', textAlign: TextAlign.center,)));
       return null;
     } catch (e) {
       if (!context.mounted) return;
