@@ -51,4 +51,8 @@ class BusScheduleNotifier extends StateNotifier<Map<String, BusScheduleState>> {
       };
     }
   }
+
+  void clearSchedules() {
+    state = {};
+  }
 }

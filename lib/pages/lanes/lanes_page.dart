@@ -8,81 +8,90 @@ class LanesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Dodaj linije'),
-            centerTitle: true,
-            bottom: const TabBar(
-              tabs: [
-                Tab(text: 'Gradski'),
-                Tab(text: 'Prigradski'),
-              ],
-              indicatorColor: Colors.white,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white,
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              _buildLaneList(context, ref, 'rvg'),
-              _buildLaneList(context, ref, 'rvp'),
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Dodaj linije'),
+          centerTitle: true,
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Gradski'),
+              Tab(text: 'Prigradski'),
             ],
+            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white,
           ),
         ),
+        body: TabBarView(
+          children: [
+            _buildLaneList(context, ref, 'rvg'),
+            _buildLaneList(context, ref, 'rvp'),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildLaneList(BuildContext context, WidgetRef ref, String rv) {
+    // Fetch lanes initially when the widget is built
     ref.read(lanesProvider.notifier).fetchLanes(context, rv);
 
     final lanesMap = ref.watch(lanesProvider);
     final lanes = lanesMap[rv];
 
     if (lanes == null) {
+      // Show loading spinner initially if data isn't fetched yet
       return const Center(child: CircularProgressIndicator.adaptive());
     } else {
       final selectedLanes = ref.watch(selectedLanesProvider);
 
-      return ListView.builder(
-        itemCount: lanes.length,
-        itemBuilder: (context, index) {
-          final lane = lanes[index];
-          final isSelected = selectedLanes.any(
-                (selectedLane) => selectedLane.lane.id == lane.id && selectedLane.type == rv,
-          );
-
-          return Column(
-            children: [
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                visualDensity: VisualDensity.compact,
-                title: Row(
-                  children: [
-                    Text(
-                      lane.broj,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        lane.linija,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-                trailing: isSelected
-                    ? Icon(Icons.check, color: Theme.of(context).colorScheme.onPrimary)
-                    : null,
-                onTap: () {
-                  ref.read(selectedLanesProvider.notifier).toggleLaneSelection(lane, rv);
-                },
-              ),
-              const Divider(height: 1),  // Reduced height for the divider
-            ],
-          );
+      return RefreshIndicator(
+        onRefresh: () async {
+          // Clear lanes and re-fetch them on pull to refresh
+          ref.read(lanesProvider.notifier).clearLanes();
+          await ref.read(lanesProvider.notifier).fetchLanes(context, rv);
         },
+        child: ListView.builder(
+          itemCount: lanes.length,
+          itemBuilder: (context, index) {
+            final lane = lanes[index];
+            final isSelected = selectedLanes.any(
+                  (selectedLane) => selectedLane.lane.id == lane.id && selectedLane.type == rv,
+            );
+
+            return Column(
+              children: [
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                  visualDensity: VisualDensity.compact,
+                  title: Row(
+                    children: [
+                      Text(
+                        lane.broj,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          lane.linija,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: isSelected
+                      ? Icon(Icons.check, color: Theme.of(context).colorScheme.onPrimary)
+                      : null,
+                  onTap: () {
+                    ref.read(selectedLanesProvider.notifier).toggleLaneSelection(lane, rv);
+                  },
+                ),
+                const Divider(height: 1),  // Reduced height for the divider
+              ],
+            );
+          },
+        ),
       );
     }
   }

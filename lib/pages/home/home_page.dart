@@ -50,9 +50,9 @@ class HomePage extends ConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            _buildTabContent(selectedLanes, 'R'), // Radni dan
-            _buildTabContent(selectedLanes, 'S'), // Subota
-            _buildTabContent(selectedLanes, 'N'), // Nedelja
+            _buildTabContent(selectedLanes, 'R', ref, context),
+            _buildTabContent(selectedLanes, 'S', ref, context),
+            _buildTabContent(selectedLanes, 'N', ref, context),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -65,21 +65,32 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildTabContent(List<SelectedLane> selectedLanes, String dayType) {
+  Widget _buildTabContent(List<SelectedLane> selectedLanes, String dayType, WidgetRef ref, BuildContext context) {
     if (selectedLanes.isEmpty) {
       return _buildTabPageNoLanes();
     }
 
-    return ListView.builder(
-      itemCount: selectedLanes.length,
-      itemBuilder: (context, index) {
-        final lane = selectedLanes[index];
-        return LaneItemWidget(
-          key: ValueKey(lane.lane.id),
-          lane: lane,
-          dayType: dayType,
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        // Clear the current schedules and force a re-fetch
+        ref.read(busScheduleProvider.notifier).clearSchedules();
+
+        // Fetch new schedules
+        for (final lane in selectedLanes) {
+          await ref.read(busScheduleProvider.notifier).fetchBusSchedule(context, lane.lane.id, lane.type);
+        }
       },
+      child: ListView.builder(
+        itemCount: selectedLanes.length,
+        itemBuilder: (context, index) {
+          final lane = selectedLanes[index];
+          return LaneItemWidget(
+            key: ValueKey(lane.lane.id),
+            lane: lane,
+            dayType: dayType,
+          );
+        },
+      ),
     );
   }
 

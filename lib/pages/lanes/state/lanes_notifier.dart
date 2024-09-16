@@ -55,4 +55,9 @@ class LanesNotifier extends StateNotifier<Map<String, List<Lane>>> {
       state = {...state, rv: lanes};
     }
   }
+
+  // Clear lanes for a specific type (rv)
+  void clearLanes() {
+    state = {};
+  }
 }
