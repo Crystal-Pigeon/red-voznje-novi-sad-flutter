@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LanesPage extends ConsumerWidget {
   const LanesPage({super.key});
@@ -11,12 +12,12 @@ class LanesPage extends ConsumerWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Dodaj linije'),
+          title: Text(AppLocalizations.of(context)!.appTitle),
           centerTitle: true,
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Gradski'),
-              Tab(text: 'Prigradski'),
+              Tab(text: AppLocalizations.of(context)!.cityLanesTabTitle),
+              Tab(text: AppLocalizations.of(context)!.ruralLanesTabTitle),
             ],
             indicatorColor: Colors.white,
             labelColor: Colors.white,
@@ -49,27 +50,27 @@ class LanesPage extends ConsumerWidget {
       child: lanes == null
           ? const Center(child: CircularProgressIndicator.adaptive())
           : lanes.isEmpty
-          ? _buildNoInternetMessage()
+          ? _buildNoInternetMessage(context)
           : _buildLanesList(context, ref, lanes, rv),
     );
   }
 
-  Widget _buildNoInternetMessage() {
+  Widget _buildNoInternetMessage(BuildContext context) {
     return ListView( // Wrapping in ListView to allow pull to refresh
-      children: const [
-        SizedBox(height: 200), // Adjust as necessary for centering
+      children: [
+        const SizedBox(height: 200), // Adjust as necessary for centering
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.wifi_off,
               size: 100,
               color: Colors.grey,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
-              'Proverite internet konekciju',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              AppLocalizations.of(context)!.checkInternetConnection,
+              style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
           ],
         ),

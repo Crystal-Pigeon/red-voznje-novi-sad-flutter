@@ -1,0 +1,37 @@
+{
+  "@@locale": "sr",
+
+  "appTitle": "Red Vožnje - Novi Sad",
+  "workDayTabTitle": "Radni dan",
+  "saturdayTabTitle": "Subota",
+  "sundayTabTitle": "Nedelja",
+  "pressPlusText": "Pritisnite “+” kako biste dodali autobuse",
+
+  "noInfoForLine": "Nema informacija za liniju:\n{lineNumber} {lineName}",
+
+  "addLanesPageTitle": "Dodaj linije",
+  "cityLanesTabTitle": "Gradski",
+  "ruralLanesTabTitle": "Prigradski",
+  "checkInternetConnection": "Proverite internet konekciju",
+
+  "favoriteLanesPageTitle": "Sortiranje omiljenih",
+  "pressPlusTextFavoriteLanesPage": "Pritisnite “+” na početnoj strani\nkako biste dodali autobuse",
+
+  "infoPageTitle": "Podrška",
+  "aboutAppTitle": "O aplikaciji",
+  "aboutAppText1": "Aplikaciju smo razvili kako bismo građanima Novog Sada i turistima koji posete Novi Sad omogućili da pregledaju red vožnje.",
+  "aboutAppText2": "Svi podaci koji se nalaze u aplikaciji su sa javnog sajta JGSP.",
+  "updateTitle": "Ažuriranje",
+  "updateText": "Uvek se prikazuje najaktuelniji red vožnje koji je dostupan i na sajtu JGSP-a.",
+  "languageTitle": "Jezik",
+  "languageText": "Aplikacija je dostupna na Srpskom i Engleskom jeziku.",
+  "languageTextButtonText": "Promeni jezik ovde",
+  "reportProblemTitle": "Prijavi grešku",
+  "reportProblemText1": "Ukoliko uočite bilo kakvu grešku u radu aplikacije budite slobodni da nam istu prijavite putem email-a.",
+  "reportProblemText2": "Neke greške mogu biti prouzrokovane zbog neispravnosti na samom sajtu JGSP-a, a mi ćemo nastojati da greške koje su do naše aplikacije rešimo u što kraćem roku.",
+  "reportProblemTextButtonText": "Prijavi grešku preko email-a",
+  "poweredByCrystalPigeon": "Powered by Crystal Pigeon",
+  "languageSelectionTitle": "Izaberite jezik",
+  "english": "Engleski",
+  "serbian": "Srpski"
+}

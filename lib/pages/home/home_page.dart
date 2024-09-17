@@ -5,6 +5,7 @@ import 'package:red_voznje_novi_sad_flutter/pages/home/state/bus_schedule_notifi
 import 'package:red_voznje_novi_sad_flutter/pages/home/widgets/lane_item_widget.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
 import '../lanes/model/selected_lane.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -14,14 +15,16 @@ class HomePage extends ConsumerWidget {
     final selectedLanes = ref.watch(selectedLanesProvider);
 
     for (final lane in selectedLanes) {
-      ref.read(busScheduleProvider.notifier).fetchBusSchedule(context, lane.lane.id, lane.type);
+      ref
+          .read(busScheduleProvider.notifier)
+          .fetchBusSchedule(context, lane.lane.id, lane.type);
     }
 
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Red Vožnje - Novi Sad'),
+          title: Text(AppLocalizations.of(context)!.addLanesPageTitle),
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.open_with),
@@ -37,11 +40,11 @@ class HomePage extends ConsumerWidget {
               },
             ),
           ],
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Radni dan'),
-              Tab(text: 'Subota'),
-              Tab(text: 'Nedelja'),
+              Tab(text: AppLocalizations.of(context)!.workDayTabTitle),
+              Tab(text: AppLocalizations.of(context)!.saturdayTabTitle),
+              Tab(text: AppLocalizations.of(context)!.sundayTabTitle),
             ],
             indicatorColor: Colors.white,
             labelColor: Colors.white,
@@ -65,9 +68,10 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildTabContent(List<SelectedLane> selectedLanes, String dayType, WidgetRef ref, BuildContext context) {
+  Widget _buildTabContent(List<SelectedLane> selectedLanes, String dayType,
+      WidgetRef ref, BuildContext context) {
     if (selectedLanes.isEmpty) {
-      return _buildTabPageNoLanes();
+      return _buildTabPageNoLanes(context);
     }
 
     return RefreshIndicator(
@@ -77,7 +81,9 @@ class HomePage extends ConsumerWidget {
 
         // Fetch new schedules
         for (final lane in selectedLanes) {
-          await ref.read(busScheduleProvider.notifier).fetchBusSchedule(context, lane.lane.id, lane.type);
+          await ref
+              .read(busScheduleProvider.notifier)
+              .fetchBusSchedule(context, lane.lane.id, lane.type);
         }
       },
       child: ListView.builder(
@@ -94,7 +100,7 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildTabPageNoLanes() {
+  Widget _buildTabPageNoLanes(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -105,10 +111,10 @@ class HomePage extends ConsumerWidget {
             width: 180,
             height: 180,
           ),
-          const Text(
+          Text(
             textAlign: TextAlign.center,
-            'Pritisnite “+” kako biste dodali autobuse',
-            style: TextStyle(fontSize: 15, color: Colors.grey),
+            AppLocalizations.of(context)!.pressPlusText,
+            style: const TextStyle(fontSize: 15, color: Colors.grey),
           ),
         ],
       ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:red_voznje_novi_sad_flutter/pages/settings/info_page/state/localization_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InfoPage extends StatelessWidget {
+class InfoPage extends ConsumerWidget {
   const InfoPage({super.key});
 
   void _launchEmail() async {
@@ -12,69 +15,132 @@ class InfoPage extends StatelessWidget {
     try {
       await launchUrl(emailUri, mode: LaunchMode.externalApplication);
     } catch (e) {
-      // Provide better error feedback
       debugPrint('Could not launch email app: $e');
     }
   }
 
+  void _showLanguageSelectionDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final currentLocale = ref.watch(localizationProvider);
+
+        return SimpleDialog(
+          title: Text(
+            AppLocalizations.of(context)!.languageSelectionTitle,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).textTheme.titleMedium?.color,
+            ),
+          ),
+          children: [
+            RadioListTile<Locale>(
+              value: const Locale('en'),
+              groupValue: currentLocale,
+              onChanged: (Locale? locale) {
+                Navigator.pop(context);
+                ref.read(localizationProvider.notifier).setLocale(const Locale('en'));
+              },
+              title: Text(
+                AppLocalizations.of(context)!.english,
+                style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color),
+              ),
+              activeColor: Theme.of(context).textTheme.titleMedium?.color,
+            ),
+            RadioListTile<Locale>(
+              value: const Locale('sr'),
+              groupValue: currentLocale,
+              onChanged: (Locale? locale) {
+                Navigator.pop(context);
+                ref.read(localizationProvider.notifier).setLocale(const Locale('sr'));
+              },
+              title: Text(
+                AppLocalizations.of(context)!.serbian,
+                style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color),
+              ),
+              activeColor: Theme.of(context).textTheme.titleMedium?.color,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Podrška'),
+        title: Text(AppLocalizations.of(context)!.infoPageTitle),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitle('Uputstvo'),
-              const SizedBox(height: 8),
-              _buildText(
-                  '1. Početni ekran\nKada pokrenete aplikaciju prvi put pojavljuje se početni ekran...'),
-              const SizedBox(height: 8),
-              _buildText(
-                  '2. Ekran za dodavanje linija\nPri otvaranju ekrana za dodavanje linija prikazaće Vam se gradske linije...'),
-              const SizedBox(height: 8),
-              _buildText(
-                  '3. Ekran za podešavanja\nNa ekranu za podešavanja možete da podešavate:'),
-              _buildSubText('3.1 Jezik\nKlikom na jezik otvara se dijalog za biranje jezika...'),
-              _buildSubText('3.2 Tema\nKlikom na temu otvara se dijalog koji Vam omogućava da birate temu...'),
-              const SizedBox(height: 8),
-              _buildText(
-                  '4. Ekran za promenu redosleda linija\nOvaj ekran sadrži sve linije koje ste prethodno dodali...'),
-              const SizedBox(height: 8),
-              _buildTitle('Ažuriranje'),
-              const SizedBox(height: 8),
-              _buildText(
-                  'Ažuriranje aplikacije vrši se svaki put kada se promeni sezona vožnji.'),
-              const SizedBox(height: 8),
-              _buildTitle('Dostupnost'),
-              const SizedBox(height: 8),
-              _buildText(
-                  'Kada je u pitanju dostupnost, aplikacija radi i u režimu rada bez interneta...'),
-              const SizedBox(height: 8),
-              _buildTitle('Kontakt'),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: _launchEmail,
-                child: const Row(
-                  children: [
-                    Icon(Icons.mail_outline),
-                    SizedBox(width: 8),
-                    Text(
-                      'contact@crystalpigeon.com',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTitle(AppLocalizations.of(context)!.aboutAppTitle),
+                  const SizedBox(height: 8),
+                  _buildText(AppLocalizations.of(context)!.aboutAppText1),
+                  const SizedBox(height: 8),
+                  _buildText(AppLocalizations.of(context)!.aboutAppText2),
+                  const SizedBox(height: 8),
+                  _buildTitle(AppLocalizations.of(context)!.updateTitle),
+                  const SizedBox(height: 8),
+                  _buildText(AppLocalizations.of(context)!.updateText),
+                  const SizedBox(height: 8),
+                  _buildTitle(AppLocalizations.of(context)!.languageTitle),
+                  const SizedBox(height: 8),
+                  _buildText(AppLocalizations.of(context)!.languageText),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () => _showLanguageSelectionDialog(context, ref),
+                    child: Text(
+                      AppLocalizations.of(context)!.languageTextButtonText,
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
-                  ],
+                  ),
+                  const SizedBox(height: 8),
+                  _buildTitle(AppLocalizations.of(context)!.reportProblemTitle),
+                  const SizedBox(height: 8),
+                  _buildText(AppLocalizations.of(context)!.reportProblemText1),
+                  const SizedBox(height: 8),
+                  _buildText(AppLocalizations.of(context)!.reportProblemText2),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: _launchEmail,
+                    child: Text(
+                      AppLocalizations.of(context)!.reportProblemTextButtonText,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: Center(
+                child: Text(
+                  AppLocalizations.of(context)!.poweredByCrystalPigeon,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -95,18 +161,6 @@ class InfoPage extends StatelessWidget {
       text,
       style: const TextStyle(
         fontSize: 15,
-      ),
-    );
-  }
-
-  Widget _buildSubText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, top: 8),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 15,
-        ),
       ),
     );
   }

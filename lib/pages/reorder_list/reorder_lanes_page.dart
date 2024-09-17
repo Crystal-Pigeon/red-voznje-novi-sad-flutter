@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
 import '../lanes/model/selected_lane.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ReorderLanesPage extends ConsumerStatefulWidget {
   const ReorderLanesPage({super.key});
@@ -29,7 +31,7 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Sortiranje omiljenih'),
+          title: Text(AppLocalizations.of(context)!.favoriteLanesPageTitle),
           centerTitle: true,
         ),
         body: reorderedLanes.isEmpty
@@ -100,10 +102,10 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
             width: 180,
             height: 180,
           ),
-          const Text(
+          Text(
             textAlign: TextAlign.center,
-            'Pritisnite “+” na početnoj strani\nkako biste dodali autobuse',
-            style: TextStyle(fontSize: 15, color: Colors.grey),
+            AppLocalizations.of(context)!.pressPlusTextFavoriteLanesPage,
+            style: const TextStyle(fontSize: 15, color: Colors.grey),
           ),
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../lanes/model/selected_lane.dart';
 import '../model/bus_schedule_response.dart';
 import '../state/bus_schedule_notifier.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LaneItemWidget extends ConsumerStatefulWidget {
   final SelectedLane lane;
@@ -60,7 +61,10 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   textAlign: TextAlign.center,
-                  'Nema informacija za liniju:\n${widget.lane.lane.broj} ${widget.lane.lane.linija}',
+                  AppLocalizations.of(context)!.noInfoForLine(
+                      widget.lane.lane.broj,
+                      widget.lane.lane.linija
+                  ),
                 ),
               ),
             ),
@@ -249,7 +253,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
               ),
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }

@@ -47,7 +47,7 @@ class BusScheduleNotifier extends StateNotifier<Map<String, BusScheduleState>> {
     } catch (e) {
       state = {
         ...state,
-        laneId: BusScheduleState.failure(e.toString()), // Store the error message
+        laneId: BusScheduleState.failure(e.toString()),
       };
     }
   }
