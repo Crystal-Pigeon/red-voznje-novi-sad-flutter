@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class BaseClient {
   var client = http.Client();
-  static String baseUrl = 'https://busnsapi.herokuapp.com';
+  static String baseUrl = 'http://www.gspns.co.rs';
 
   Map<String, String> basicHeaders = {
     "Accept": "application/json, text/plain, */*",
@@ -29,12 +29,17 @@ class BaseClient {
       debugPrint("status code: ${response.statusCode}");
       if (!context.mounted) return;
 
-      return checkResponse(response, context);
+      if (response.headers['content-type']?.contains('application/json') == true) {
+        return checkResponse(response, context);  // Parse as JSON if content type is JSON
+      } else {
+        // Return as a plain text (HTML) response if the content is not JSON
+        return response.body;
+      }
     } on TimeoutException catch (_) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Došlo je do vremenskog ograničenja. Pokušajte ponovo.', textAlign: TextAlign.center),
+          content: Text('Request timed out. Please try again.', textAlign: TextAlign.center),
         ),
       );
       return null;
@@ -60,7 +65,7 @@ class BaseClient {
   dynamic checkResponse(dynamic response, BuildContext context) {
     try {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body);
+        return jsonDecode(response.body);  // Only parse JSON responses
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
