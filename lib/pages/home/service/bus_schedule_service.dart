@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
-import 'package:red_voznje_novi_sad_flutter/shared/services/network/base_client.dart';
+import '../../../shared/services/network/base_client.dart';
 import '../model/bus_schedule_response.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;

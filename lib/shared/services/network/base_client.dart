@@ -26,7 +26,7 @@ class BaseClient {
     try {
       var response = await client
           .get(url, headers: requestHeaders)
-          .timeout(const Duration(seconds: 5)); // Set timeout to 5 seconds
+          .timeout(const Duration(seconds: 10)); // Set timeout to 10 seconds
       debugPrint("status code: ${response.statusCode}");
       if (!context.mounted) return;
 

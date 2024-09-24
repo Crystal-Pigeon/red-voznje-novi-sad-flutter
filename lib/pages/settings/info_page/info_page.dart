@@ -19,6 +19,11 @@ class InfoPage extends ConsumerWidget {
     }
   }
 
+  void _openWebsite() async {
+      var url = Uri.parse('https://crystalpigeon.com');
+      await launchUrl(url);
+  }
+
   void _showLanguageSelectionDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
@@ -66,7 +71,6 @@ class InfoPage extends ConsumerWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -74,73 +78,79 @@ class InfoPage extends ConsumerWidget {
         title: Text(AppLocalizations.of(context)!.infoPageTitle),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTitle(AppLocalizations.of(context)!.aboutAppTitle),
-                  const SizedBox(height: 8),
-                  _buildText(AppLocalizations.of(context)!.aboutAppText1),
-                  const SizedBox(height: 8),
-                  _buildText(AppLocalizations.of(context)!.aboutAppText2),
-                  const SizedBox(height: 8),
-                  _buildTitle(AppLocalizations.of(context)!.updateTitle),
-                  const SizedBox(height: 8),
-                  _buildText(AppLocalizations.of(context)!.updateText),
-                  const SizedBox(height: 8),
-                  _buildTitle(AppLocalizations.of(context)!.languageTitle),
-                  const SizedBox(height: 8),
-                  _buildText(AppLocalizations.of(context)!.languageText),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () => _showLanguageSelectionDialog(context, ref),
-                    child: Text(
-                      AppLocalizations.of(context)!.languageTextButtonText,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTitle(AppLocalizations.of(context)!.aboutAppTitle),
+              const SizedBox(height: 8),
+              _buildText(AppLocalizations.of(context)!.aboutAppText1),
+              const SizedBox(height: 8),
+              _buildText(AppLocalizations.of(context)!.aboutAppText2),
+              const SizedBox(height: 8),
+              _buildTitle(AppLocalizations.of(context)!.updateTitle),
+              const SizedBox(height: 8),
+              _buildText(AppLocalizations.of(context)!.updateText),
+              const SizedBox(height: 8),
+              _buildTitle(AppLocalizations.of(context)!.languageTitle),
+              const SizedBox(height: 8),
+              _buildText(AppLocalizations.of(context)!.languageText),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () => _showLanguageSelectionDialog(context, ref),
+                child: Text(
+                  AppLocalizations.of(context)!.languageTextButtonText,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  const SizedBox(height: 8),
-                  _buildTitle(AppLocalizations.of(context)!.reportProblemTitle),
-                  const SizedBox(height: 8),
-                  _buildText(AppLocalizations.of(context)!.reportProblemText1),
-                  const SizedBox(height: 8),
-                  _buildText(AppLocalizations.of(context)!.reportProblemText2),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: _launchEmail,
-                    child: Text(
-                      AppLocalizations.of(context)!.reportProblemTextButtonText,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 0),
-              child: Center(
+              const SizedBox(height: 8),
+              _buildTitle(AppLocalizations.of(context)!.reportProblemTitle),
+              const SizedBox(height: 8),
+              _buildText(AppLocalizations.of(context)!.reportProblemText1),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: _launchEmail,
+                child: Text(
+                  AppLocalizations.of(context)!.reportProblemTextButtonText,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildTitle(AppLocalizations.of(context)!.theRidersTitle),
+              const SizedBox(height: 8),
+              _buildText(AppLocalizations.of(context)!.theRidersText),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: _openWebsite,
+                child: Text(
+                  AppLocalizations.of(context)!.theRidersButtonText,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32), // Add some space at the bottom for better scrolling experience
+              Center(
                 child: Text(
                   AppLocalizations.of(context)!.poweredByCrystalPigeon,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
