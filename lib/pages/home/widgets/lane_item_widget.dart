@@ -215,13 +215,11 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       }
     }
 
-    String trimmedLine = linija.replaceFirst(RegExp(r'[A|B]:\s*'), '');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          trimmedLine.trim(),
+          _extractDirectionName(linija),
           style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onTertiary),
         ),
         const SizedBox(height: 4),
@@ -259,10 +257,33 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
   }
 
   String _extractLineNumber(String naziv) {
-    return naziv.split(' ')[0];
+    // Use a regular expression to find the number followed by an optional letter
+    final regex = RegExp(r':\s*(\d+[A-Z]?)');
+    final match = regex.firstMatch(naziv);
+
+    // Return the matched group or an empty string if not found
+    if (match != null) {
+      return match.group(1)?.trim() ?? '';
+    } else {
+      return ''; // Return an empty string if no match
+    }
   }
 
   String _extractRouteName(String naziv) {
     return naziv.substring(naziv.indexOf(' ') + 1).trim();
   }
+
+  String _extractDirectionName(String headerText) {
+    // Use a regular expression to find the part after 'A:' or 'B:'
+    final regex = RegExp(r'[AB]:\s*(.*)');
+    final match = regex.firstMatch(headerText);
+
+    // Return the matched group or an empty string if not found
+    if (match != null) {
+      return match.group(1)?.trim() ?? '';
+    } else {
+      return ''; // Return an empty string if no match
+    }
+  }
+
 }

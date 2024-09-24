@@ -12,7 +12,11 @@
   "addLanesPageTitle": "Dodaj linije",
   "cityLanesTabTitle": "Gradski",
   "ruralLanesTabTitle": "Prigradski",
+
   "checkInternetConnection": "Proverite internet konekciju",
+  "anErrorOccurred": "Došlo je do greške",
+  "error": "Greška:",
+  "timeout": "Zahtev je istekao. Pokušajte ponovo.",
 
   "favoriteLanesPageTitle": "Sortiranje omiljenih",
   "pressPlusTextFavoriteLanesPage": "Pritisnite “+” na početnoj strani\nkako biste dodali autobuse",

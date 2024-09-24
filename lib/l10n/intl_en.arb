@@ -12,7 +12,11 @@
   "addLanesPageTitle": "Add lines",
   "cityLanesTabTitle": "City",
   "ruralLanesTabTitle": "Suburban",
+
   "checkInternetConnection": "Check your internet connection",
+  "anErrorOccurred": "An error occurred:",
+  "error": "Error:",
+  "timeout": "Request timed out. Please try again.",
 
   "favoriteLanesPageTitle": "Reorder favorites",
   "pressPlusTextFavoriteLanesPage": "Press “+” on the home page\nto add buses",

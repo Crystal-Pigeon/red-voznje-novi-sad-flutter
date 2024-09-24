@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BaseClient {
   var client = http.Client();
@@ -38,16 +39,16 @@ class BaseClient {
     } on TimeoutException catch (_) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Request timed out. Please try again.', textAlign: TextAlign.center),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.timeout, textAlign: TextAlign.center),
         ),
       );
       return null;
     } on SocketException {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please check your internet connection.', textAlign: TextAlign.center),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.checkInternetConnection, textAlign: TextAlign.center),
         ),
       );
       return null;
@@ -55,7 +56,7 @@ class BaseClient {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('An error occurred: $e', textAlign: TextAlign.center),
+          content: Text('${AppLocalizations.of(context)!.anErrorOccurred} $e', textAlign: TextAlign.center),
         ),
       );
       return null;
@@ -69,7 +70,7 @@ class BaseClient {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${response.statusCode}', textAlign: TextAlign.center),
+            content: Text('${AppLocalizations.of(context)!.error} ${response.statusCode}', textAlign: TextAlign.center),
           ),
         );
         return null;
