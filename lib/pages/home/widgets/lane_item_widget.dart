@@ -26,7 +26,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
   @override
   Widget build(BuildContext context) {
     final busSchedulesMap = ref.watch(busScheduleProvider);
-    final busScheduleState = busSchedulesMap[widget.lane.lane.id];
+    final busScheduleState = busSchedulesMap['${widget.lane.lane.id}-${widget.dayType}'];
 
     if (busScheduleState == null) {
       return Padding(

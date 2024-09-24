@@ -22,33 +22,29 @@ final busScheduleProvider = StateNotifierProvider<BusScheduleNotifier, Map<Strin
       (ref) => BusScheduleNotifier(),
 );
 
-
 class BusScheduleNotifier extends StateNotifier<Map<String, BusScheduleState>> {
   BusScheduleNotifier() : super({});
 
-  Future<void> fetchBusSchedule(BuildContext context, String laneId, String rv) async {
-    if (state.containsKey(laneId)) {
-      return;
-    }
+  Future<void> fetchBusSchedule(BuildContext context, String laneId, String rv, String selectedDate) async {
+    final days = ['R', 'S', 'N']; // R: Workday, S: Saturday, N: Sunday
 
-    try {
-      final busSchedules = await BusScheduleService().getBusSchedule(context, laneId, rv);
-
-      if (busSchedules != null) {
+    for (final day in days) {
+      try {
+        final busSchedules = await BusScheduleService().getBusSchedule(context, laneId, rv, day);
+        if (busSchedules != null) {
+          state = {
+            ...state,
+            '$laneId-$day': BusScheduleState.success(busSchedules),
+          };
+        } else {
+          throw Exception('No schedules found for day $day');
+        }
+      } catch (e) {
         state = {
           ...state,
-          laneId: BusScheduleState.success(
-            busSchedules.map((json) => BusSchedule.fromJson(json)).toList(),
-          ),
+          '$laneId-$day': BusScheduleState.failure(e.toString()),
         };
-      } else {
-        throw Exception('No schedules found');
       }
-    } catch (e) {
-      state = {
-        ...state,
-        laneId: BusScheduleState.failure(e.toString()),
-      };
     }
   }
 

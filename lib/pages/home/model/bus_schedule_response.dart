@@ -4,11 +4,11 @@ class BusSchedule {
   final String naziv;
   final String? linijaA;
   final String? linijaB;
-  final String? linija; // For single route schedules
+  final String? linija;
   final String dan;
   final Map<String, List<String>>? rasporedA;
   final Map<String, List<String>>? rasporedB;
-  final Map<String, List<String>>? raspored; // For single schedule routes
+  final Map<String, List<String>>? raspored;
 
   BusSchedule({
     required this.id,
