@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,17 +25,18 @@ class HomePage extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.addLanesPageTitle),
+          title: Text(AppLocalizations.of(context)!.appTitle,
+          style: const TextStyle(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.open_with),
+            icon: const Icon(CupertinoIcons.move),
             onPressed: () {
               context.pushNamed('reorderLanes');
             },
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.question_mark_sharp),
+              icon: const Icon(CupertinoIcons.question_circle),
               onPressed: () {
                 context.pushNamed('info');
               },
@@ -62,7 +64,8 @@ class HomePage extends ConsumerWidget {
           onPressed: () {
             context.pushNamed('lanes');
           },
-          child: const Icon(Icons.add, color: Colors.white, size: 40),
+          shape: const CircleBorder(),
+          child: const Icon(CupertinoIcons.add, color: Colors.white, size: 40),
         ),
       ),
     );

@@ -75,7 +75,8 @@ class InfoPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.infoPageTitle),
+        title: Text(AppLocalizations.of(context)!.infoPageTitle,
+            style: const TextStyle(fontSize: 18)),
         centerTitle: true,
       ),
       body: SafeArea(

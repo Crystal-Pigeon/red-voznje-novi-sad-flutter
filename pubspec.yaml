@@ -1,7 +1,7 @@
 name: red_voznje_novi_sad_flutter
 description: "Mobilna aplikacija sa redovima javnog prevoza Novi Sad"
 
-version: 1.2.1+2
+version: 1.2.3+4
 
 environment:
   sdk: '>=3.5.0-222.0.dev <4.0.0'
@@ -35,11 +35,7 @@ flutter_native_splash:
   android: true
   ios: true
 
-fonts:
-  - family: Manrope
-    fonts:
-      - asset: lib/assets/fonts/Manrope-Regular.ttf
-      - asset: lib/assets/fonts/Manrope-Bold.ttf
+
 
 flutter_icons:
   android: true
@@ -62,3 +58,8 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: lib/assets/fonts/Manrope-Regular.ttf
+        - asset: lib/assets/fonts/Manrope-Bold.ttf

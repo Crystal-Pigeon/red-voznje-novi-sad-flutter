@@ -12,7 +12,8 @@ class LanesPage extends ConsumerWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.appTitle),
+          title: Text(AppLocalizations.of(context)!.addLanesPageTitle,
+              style: const TextStyle(fontSize: 18)),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -50,13 +51,14 @@ class LanesPage extends ConsumerWidget {
       child: lanes == null
           ? const Center(child: CircularProgressIndicator.adaptive())
           : lanes.isEmpty
-          ? _buildNoInternetMessage(context)
-          : _buildLanesList(context, ref, lanes, rv),
+              ? _buildNoInternetMessage(context)
+              : _buildLanesList(context, ref, lanes, rv),
     );
   }
 
   Widget _buildNoInternetMessage(BuildContext context) {
-    return ListView( // Wrapping in ListView to allow pull to refresh
+    return ListView(
+      // Wrapping in ListView to allow pull to refresh
       children: [
         const SizedBox(height: 200), // Adjust as necessary for centering
         Column(
@@ -87,15 +89,15 @@ class LanesPage extends ConsumerWidget {
       itemBuilder: (context, index) {
         final lane = lanes[index];
         final isSelected = selectedLanes.any(
-              (selectedLane) =>
-          selectedLane.lane.id == lane.id && selectedLane.type == rv,
+          (selectedLane) =>
+              selectedLane.lane.id == lane.id && selectedLane.type == rv,
         );
 
         return Column(
           children: [
             ListTile(
               contentPadding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
               visualDensity: VisualDensity.compact,
               title: Row(
                 children: [
@@ -115,7 +117,7 @@ class LanesPage extends ConsumerWidget {
               ),
               trailing: isSelected
                   ? Icon(Icons.check,
-                  color: Theme.of(context).colorScheme.onPrimary)
+                      color: Theme.of(context).colorScheme.onPrimary)
                   : null,
               onTap: () {
                 ref

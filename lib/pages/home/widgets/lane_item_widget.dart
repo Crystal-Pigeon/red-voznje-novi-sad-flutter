@@ -104,7 +104,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
                     Row(
                       children: [
                         Container(
-                          width: 40, // Adjust the size as needed
+                          width: 40,
                           height: 40,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.onPrimary, // Circle color
@@ -270,7 +270,15 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
   }
 
   String _extractRouteName(String naziv) {
-    return naziv.substring(naziv.indexOf(' ') + 1).trim();
+    naziv = naziv.replaceAll(RegExp(r'Линија\s*:\s*'), '');
+    final linePattern = RegExp(r'^[0-9A-Za-z]+\s+');
+    final match = linePattern.firstMatch(naziv);
+
+    if (match != null) {
+      return naziv.substring(match.end).trim();
+    }
+
+    return naziv.trim();
   }
 
   String _extractDirectionName(String headerText) {

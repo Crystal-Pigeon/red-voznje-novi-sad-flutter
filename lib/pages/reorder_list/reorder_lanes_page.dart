@@ -31,7 +31,8 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.favoriteLanesPageTitle),
+          title: Text(AppLocalizations.of(context)!.favoriteLanesPageTitle,
+              style: const TextStyle(fontSize: 18)),
           centerTitle: true,
         ),
         body: reorderedLanes.isEmpty
