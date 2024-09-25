@@ -54,6 +54,7 @@
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
-
+    <key>FirebaseCrashlyticsCollectionEnabled</key>
+    <true/>
 </dict>
 </plist>

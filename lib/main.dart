@@ -11,8 +11,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  try {
+    await Firebase.initializeApp();
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  } catch (e) {
+    debugPrint('Firebase initialization error: $e');
+  }
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
