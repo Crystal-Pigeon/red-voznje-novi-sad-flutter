@@ -8,7 +8,6 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     _goToHomePage(context);
 
 

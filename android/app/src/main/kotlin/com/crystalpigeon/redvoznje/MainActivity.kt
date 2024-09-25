@@ -1,4 +1,4 @@
-package com.example.red_voznje_novi_sad_flutter
+package com.crystalpigeon.redvoznje
 
 import io.flutter.embedding.android.FlutterActivity
 
