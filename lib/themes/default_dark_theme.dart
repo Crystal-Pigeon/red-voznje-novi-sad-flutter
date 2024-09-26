@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 const defaultPrimaryColor = Color(0xFF0066CC);
-const backgroundColor = Color(0xFF242429);
-const onBackgroundColor = Color.fromRGBO(142, 142, 147, 1);
+const secondaryColor = Color(0xFF242429);
 const surfaceContainerColor = Color(0xFF2F2F34);
-const onSurfaceColor = Colors.white;
 const dividerColor = Color(0xFF3A3A3E);
 const secondaryText = Color(0xFF828180);
 
@@ -17,11 +15,10 @@ ThemeData darkTheme() {
       onTertiary: secondaryText,
       onPrimary: defaultPrimaryColor,
       primary: defaultPrimaryColor,
-      surface: backgroundColor,
+      surface: secondaryColor,
       surfaceContainer: surfaceContainerColor,
-      onSurface: onSurfaceColor,
     ),
-    scaffoldBackgroundColor: backgroundColor,
+    scaffoldBackgroundColor: secondaryColor,
     appBarTheme: ThemeData.dark().appBarTheme.copyWith(
           backgroundColor: defaultPrimaryColor,
           foregroundColor: Colors.white,

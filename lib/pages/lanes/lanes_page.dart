@@ -104,13 +104,13 @@ class LanesPage extends ConsumerWidget {
                   Text(
                     lane.broj,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 12),
+                        fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       lane.linija,
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ),
                 ],

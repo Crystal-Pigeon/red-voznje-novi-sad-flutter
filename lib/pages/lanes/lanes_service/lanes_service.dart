@@ -42,7 +42,23 @@ class LanesService extends BaseClient {
     final String? datum = await getDate(context);
     if (datum == null) return [];
 
-    String query = '?rv=$rv&vaziod=$datum&dan=R';
+    // Fetch data for all days: R (working day), N (night), and S (Saturday)
+    final days = ['R', 'N', 'S'];
+    List<Lane> allLanes = [];
+
+    for (String day in days) {
+      final lanes = await fetchLanesForDay(context, rv, datum, day);
+      allLanes.addAll(lanes);
+    }
+
+    // Remove duplicates and sort the lanes
+    allLanes = _removeDuplicateAndSortLanes(allLanes);
+
+    return allLanes;
+  }
+
+  Future<List<Lane>> fetchLanesForDay(BuildContext context, String rv, String datum, String day) async {
+    String query = '?rv=$rv&vaziod=$datum&dan=$day';
     final response = await get(urlAllLanes + query, context);
 
     if (response != null && response is String) {
@@ -51,6 +67,51 @@ class LanesService extends BaseClient {
       return [];
     }
   }
+
+// Function to remove duplicate lanes based on 'id' and sort them
+  List<Lane> _removeDuplicateAndSortLanes(List<Lane> lanes) {
+    final Map<String, Lane> uniqueLanes = {};
+
+    // Remove duplicates based on 'id'
+    for (final lane in lanes) {
+      uniqueLanes[lane.id] = lane;
+    }
+
+    // Sort lanes
+    List<Lane> sortedLanes = uniqueLanes.values.toList();
+    sortedLanes.sort((lane1, lane2) => _customLaneSort(lane1, lane2));
+
+    return sortedLanes;
+  }
+
+// Custom sorting function to ensure '5N' is placed next to '5'
+  int _customLaneSort(Lane lane1, Lane lane2) {
+    // Extract base numbers and suffixes
+    final RegExp regex = RegExp(r'^(\d+)([A-Za-z]*)$');
+
+    final match1 = regex.firstMatch(lane1.broj);
+    final match2 = regex.firstMatch(lane2.broj);
+
+    if (match1 != null && match2 != null) {
+      final baseNumber1 = int.parse(match1.group(1)!);
+      final baseNumber2 = int.parse(match2.group(1)!);
+
+      // Compare base numbers first
+      int comparison = baseNumber1.compareTo(baseNumber2);
+      if (comparison != 0) {
+        return comparison;
+      }
+
+      // If base numbers are equal, compare the suffixes
+      final suffix1 = match1.group(2) ?? '';
+      final suffix2 = match2.group(2) ?? '';
+      return suffix1.compareTo(suffix2);
+    }
+
+    // Fallback if no match
+    return lane1.broj.compareTo(lane2.broj);
+  }
+
 
   List<Lane> parseLanesFromHtml(String htmlString) {
     final html_dom.Document document = html_parser.parse(htmlString);
