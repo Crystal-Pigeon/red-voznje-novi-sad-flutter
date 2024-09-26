@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
 import '../lanes/model/selected_lane.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -93,16 +94,22 @@ class _ReorderLanesPageState extends ConsumerState<ReorderLanesPage> {
   }
 
   Widget _buildTabPageNoLanes() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    // Choose the appropriate icon based on the current theme
+    final iconPath = isDarkMode
+        ? 'lib/assets/dark_bus_icon.svg'
+        : 'lib/assets/light_bus_icon.svg';
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 16),
-          Image.asset(
-            'lib/assets/light_bus_icon.png',
-            width: 180,
-            height: 180,
+          SvgPicture.asset(
+            iconPath,
+            width: 120,
+            height: 120,
           ),
+          const SizedBox(height: 16),
           Text(
             textAlign: TextAlign.center,
             AppLocalizations.of(context)!.pressPlusTextFavoriteLanesPage,

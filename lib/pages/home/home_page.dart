@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/home/state/bus_schedule_notifier.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/home/widgets/lane_item_widget.dart';
@@ -104,16 +105,22 @@ class HomePage extends ConsumerWidget {
   }
 
   Widget _buildTabPageNoLanes(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    // Choose the appropriate icon based on the current theme
+    final iconPath = isDarkMode
+        ? 'lib/assets/dark_bus_icon.svg'
+        : 'lib/assets/light_bus_icon.svg';
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 16),
-          Image.asset(
-            'lib/assets/light_bus_icon.png',
-            width: 180,
-            height: 180,
+          SvgPicture.asset(
+            iconPath,
+            width: 120,
+            height: 120,
           ),
+          const SizedBox(height: 16),
           Text(
             textAlign: TextAlign.center,
             AppLocalizations.of(context)!.pressPlusText,

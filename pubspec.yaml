@@ -1,7 +1,7 @@
 name: red_voznje_novi_sad_flutter
 description: "Mobilna aplikacija sa redovima javnog prevoza Novi Sad"
 
-version: 1.2.3+4
+version: 1.2.0+5
 
 environment:
   sdk: '>=3.5.0-222.0.dev <4.0.0'
@@ -34,8 +34,6 @@ flutter_native_splash:
   image: lib/assets/icon.png
   android: true
   ios: true
-
-
 
 flutter_icons:
   android: true

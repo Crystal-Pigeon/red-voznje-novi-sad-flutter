@@ -48,6 +48,7 @@ ThemeData darkTheme() {
     ),
     cardTheme: const CardTheme(
       elevation: 2,
+      shadowColor: Colors.black26
     ),
     tabBarTheme: const TabBarTheme(
       dividerColor: Colors.transparent,
