@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import '../../../shared/services/network/base_client.dart';
@@ -9,9 +11,41 @@ import 'package:html/dom.dart' as dom;
 class BusScheduleService extends BaseClient {
   static const String baseUrl = "/red-voznje/ispis-polazaka";
 
+  Future<String?> getDate(BuildContext context) async {
+    const url = '/feeds/red-voznje';
+
+    final response = await get(url, context);
+
+    if (response != null) {
+      try {
+        // Trim the string to remove unnecessary whitespace
+        final trimmedResponse = response.trim();
+
+        // Parse the trimmed response as JSON
+        final List<dynamic> jsonResponse = jsonDecode(trimmedResponse) as List<dynamic>;
+
+        if (jsonResponse.isNotEmpty) {
+          final datum = jsonResponse.first['datum'] as String?;
+          return datum;
+        } else {
+          debugPrint('No datum found in response');
+          return null;
+        }
+      } catch (e) {
+        debugPrint('Error extracting datum: $e');
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   Future<List<BusSchedule>?> getBusSchedule(
       BuildContext context, String laneId, String rv, String day) async {
-    final String query = '?rv=$rv&vaziod=2024-09-09&dan=$day&linija%5B%5D=$laneId';
+    final String? datum = await getDate(context);
+    if (datum == null) return [];
+
+    final String query = '?rv=$rv&vaziod=$datum&dan=$day&linija%5B%5D=$laneId';
     final response = await get(baseUrl + query, context);
 
     if (response != null && response is String) {

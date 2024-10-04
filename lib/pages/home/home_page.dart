@@ -19,7 +19,7 @@ class HomePage extends ConsumerWidget {
     for (final lane in selectedLanes) {
       ref
           .read(busScheduleProvider.notifier)
-          .fetchBusSchedule(context, lane.lane.id, lane.type, '2024-09-09'); // Pass selectedDate here
+          .fetchBusSchedule(context, lane.lane.id, lane.type);
     }
 
     return DefaultTabController(
@@ -87,7 +87,7 @@ class HomePage extends ConsumerWidget {
         for (final lane in selectedLanes) {
           await ref
               .read(busScheduleProvider.notifier)
-              .fetchBusSchedule(context, lane.lane.id, lane.type, '2024-09-09'); // Pass selectedDate here
+              .fetchBusSchedule(context, lane.lane.id, lane.type);
         }
       },
       child: ListView.builder(

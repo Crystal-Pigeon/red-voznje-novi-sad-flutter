@@ -6,19 +6,30 @@ plugins {
     id "com.google.gms.google-services"
 }
 
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     namespace = "com.crystalpigeon.redvoznje"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
 
     defaultConfig {
-        applicationId = "com.crystalpigeon.redvoznje"
+        applicationId = "com.crystalpigeon.busnovisad"
         minSdk = 21
-        //noinspection OldTargetApi
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 35
+        versionCode = 10
+        versionName = "1.0.5"
     }
 
     compileOptions {
@@ -32,11 +43,10 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            signingConfig = signingConfigs.release
-
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 mappingFileUploadEnabled true

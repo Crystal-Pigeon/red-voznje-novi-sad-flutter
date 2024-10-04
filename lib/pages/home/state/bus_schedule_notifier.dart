@@ -25,7 +25,7 @@ final busScheduleProvider = StateNotifierProvider<BusScheduleNotifier, Map<Strin
 class BusScheduleNotifier extends StateNotifier<Map<String, BusScheduleState>> {
   BusScheduleNotifier() : super({});
 
-  Future<void> fetchBusSchedule(BuildContext context, String laneId, String rv, String selectedDate) async {
+  Future<void> fetchBusSchedule(BuildContext context, String laneId, String rv) async {
     final days = ['R', 'S', 'N']; // R: Workday, S: Saturday, N: Sunday
 
     for (final day in days) {
