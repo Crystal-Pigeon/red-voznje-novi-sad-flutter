@@ -12,13 +12,13 @@ class LanesPage extends ConsumerWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.addLanesPageTitle,
+          title: Text(AppLocalizations.of(context)!.bus_lines_title,
               style: const TextStyle(fontSize: 18)),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.cityLanesTabTitle),
-              Tab(text: AppLocalizations.of(context)!.ruralLanesTabTitle),
+              Tab(text: AppLocalizations.of(context)!.bus_lines_urban),
+              Tab(text: AppLocalizations.of(context)!.bus_lines_suburban),
             ],
             indicatorColor: Colors.white,
             labelColor: Colors.white,
@@ -71,7 +71,7 @@ class LanesPage extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.checkInternetConnection,
+              AppLocalizations.of(context)!.error_no_internet_connection,
               style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
           ],

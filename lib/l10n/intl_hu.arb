@@ -1,0 +1,48 @@
+{
+  "@@locale": "hu",
+
+  "home_title": "Menetrend",
+  "home_workday": "Munkanap",
+  "home_saturday": "Szombat",
+  "home_sunday": "Vasárnap",
+  "home_no_data_message": "Még nem választottál buszjáratot.\nKoppints a “+” gombra a kedvenc útvonalak kiválasztásához.",
+
+  "home_bus_no_data_message": "Nincs elérhető menetrend a kiválasztott napra",
+
+  "bus_lines_title": "Buszjáratok",
+  "bus_lines_urban": "Városi",
+  "bus_lines_suburban": "Külvárosi",
+  "bus_lines_no_data_message": "Nincs elérhető buszjárat",
+
+  "about_app_title": "Az alkalmazásról",
+  "about_app_about_app_section_title": "Az alkalmazásról",
+  "about_app_about_app_section_description": "A Menetrend - Novi Sad alkalmazást azért fejlesztettük, hogy városunk lakóinak és látogatóinak egyszerű módot biztosítsunk a buszmenetrendek megtekintésére és útjaik megtervezésére.\n\nAz alkalmazás minden adata a hivatalos JGSP Novi Sad webhelyről származik, ami garantálja az információk pontosságát. Azonban a Menetrend - Novi Sad alkalmazás nem vállal felelősséget a buszszolgáltatások késéséért vagy lemondásáért.",
+  "about_app_updates_section_title": "Rendszeres frissítések",
+  "about_app_updates_section_description": "Az alkalmazást rendszeresen frissítjük a hivatalos JGSP webhelyen elérhető menetrendek alapján, így mindig a legmegbízhatóbb információkat kapja.",
+  "about_app_language_section_title": "Fedezd fel Újvidéket a saját nyelveden",
+  "about_app_language_section_description": "Annak érdekében, hogy az alkalmazás szélesebb közönség számára is elérhető legyen, négy nyelven érhető el: szerbül, angolul, oroszul és magyarul. Legyen szó helyi lakosokról vagy látogatókról, arra törekszünk, hogy megkönnyítsük a Novi Sad-i utazások tervezését.",
+  "about_app_language_section_action": "Válassz nyelvet",
+  "about_app_issue_section_title": "Jelentsen problémát",
+  "about_app_issue_section_description": "Ha bármilyen problémát észlel az alkalmazással, vegye fel velünk a kapcsolatot. Mindent megteszünk a probléma minél gyorsabb megoldása érdekében. Felhívjuk figyelmét, hogy egyes problémákat a hivatalos JGSP Novi Sad webhelyéről származó adatok okozhatnak, amelyeket az ütemtervekhez és frissítésekhez használunk.",
+  "about_app_issue_section_action": "Lépjen kapcsolatba velünk",
+  "about_app_issue_section_email_subject": "Menetrend: Hiba az alkalmazásban",
+  "about_app_riders_section_title": "Utasok",
+  "about_app_riders_section_description": "Mi vagyunk a Crystal Pigeon, egy újvidéki vállalat, és örömmel vagyunk részei a mindennapi kalandjaidnak! Arra törekszünk, hogy az utazás Novi Sadon keresztül a lehető legegyszerűbb és legélvezetesebb legyen. Ha segítségre van szüksége vagy javaslatai vannak, forduljon hozzánk bizalommal!",
+  "about_app_riders_section_action": "Ismerjen meg minket",
+  "about_app_footer": "Powered by Crystal Pigeon",
+
+  "error_no_internet_connection": "Nincs internetkapcsolat. Kérjük, ellenőrizze az internetbeállításait, és próbálkozzon újra.",
+  "anErrorOccurred": "Hiba történt:",
+  "error": "Hiba:",
+  "timeout": "A kérés időtúllépés miatt meghiúsult. Kérjük, próbálja újra.",
+
+  "favoriteLanesPageTitle": "Kedvencek újrarendezése",
+  "pressPlusTextFavoriteLanesPage": "Koppints a “+” gombra az otthoni oldalon\nbuszok hozzáadásához",
+
+  "languageSelectionTitle": "Válassz nyelvet",
+  "english": "Angol",
+  "serbian": "Szerb",
+  "russian": "Orosz",
+  "hungarian": "Magyar"
+
+}

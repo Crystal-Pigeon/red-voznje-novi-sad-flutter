@@ -26,7 +26,7 @@ class BaseClient {
     try {
       var response = await client
           .get(url, headers: requestHeaders)
-          .timeout(const Duration(seconds: 10)); // Set timeout to 10 seconds
+          .timeout(const Duration(seconds: 20)); // Set timeout to 20 seconds
       debugPrint("status code: ${response.statusCode}");
       if (!context.mounted) return;
 
@@ -48,7 +48,7 @@ class BaseClient {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.checkInternetConnection, textAlign: TextAlign.center),
+          content: Text(AppLocalizations.of(context)!.error_no_internet_connection, textAlign: TextAlign.center),
         ),
       );
       return null;

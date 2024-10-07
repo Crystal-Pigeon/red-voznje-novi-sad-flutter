@@ -7,17 +7,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class InfoPage extends ConsumerWidget {
   const InfoPage({super.key});
 
-  void _launchEmail() async {
+  void _launchEmail(BuildContext context) async {
+    final String subject = Uri.encodeComponent(AppLocalizations.of(context)!.about_app_issue_section_email_subject);
+
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: 'contact@crystalpigeon.com',
+      query: 'subject=$subject',
     );
+
     try {
       await launchUrl(emailUri, mode: LaunchMode.externalApplication);
     } catch (e) {
       debugPrint('Could not launch email app: $e');
     }
   }
+
 
   void _openWebsite() async {
       var url = Uri.parse('https://crystalpigeon.com');
@@ -65,6 +70,32 @@ class InfoPage extends ConsumerWidget {
               ),
               activeColor: Theme.of(context).textTheme.titleMedium?.color,
             ),
+            RadioListTile<Locale>(
+              value: const Locale('hu'),
+              groupValue: currentLocale,
+              onChanged: (Locale? locale) {
+                Navigator.pop(context);
+                ref.read(localizationProvider.notifier).setLocale(const Locale('hu'));
+              },
+              title: Text(
+                AppLocalizations.of(context)!.hungarian,
+                style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color),
+              ),
+              activeColor: Theme.of(context).textTheme.titleMedium?.color,
+            ),
+            RadioListTile<Locale>(
+              value: const Locale('ru'),
+              groupValue: currentLocale,
+              onChanged: (Locale? locale) {
+                Navigator.pop(context);
+                ref.read(localizationProvider.notifier).setLocale(const Locale('ru'));
+              },
+              title: Text(
+                AppLocalizations.of(context)!.russian,
+                style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color),
+              ),
+              activeColor: Theme.of(context).textTheme.titleMedium?.color,
+            ),
           ],
         );
       },
@@ -75,7 +106,7 @@ class InfoPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.infoPageTitle,
+        title: Text(AppLocalizations.of(context)!.about_app_title,
             style: const TextStyle(fontSize: 18)),
         centerTitle: true,
       ),
@@ -85,24 +116,22 @@ class InfoPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTitle(AppLocalizations.of(context)!.aboutAppTitle),
+              _buildTitle(AppLocalizations.of(context)!.about_app_about_app_section_title),
               const SizedBox(height: 8),
-              _buildText(AppLocalizations.of(context)!.aboutAppText1),
-              const SizedBox(height: 8),
-              _buildText(AppLocalizations.of(context)!.aboutAppText2),
+              _buildText(AppLocalizations.of(context)!.about_app_about_app_section_description),
               const SizedBox(height: 20),
-              _buildTitle(AppLocalizations.of(context)!.updateTitle),
+              _buildTitle(AppLocalizations.of(context)!.about_app_updates_section_title),
               const SizedBox(height: 8),
-              _buildText(AppLocalizations.of(context)!.updateText),
+              _buildText(AppLocalizations.of(context)!.about_app_updates_section_description),
               const SizedBox(height: 20),
-              _buildTitle(AppLocalizations.of(context)!.languageTitle),
+              _buildTitle(AppLocalizations.of(context)!.about_app_language_section_title),
               const SizedBox(height: 8),
-              _buildText(AppLocalizations.of(context)!.languageText),
+              _buildText(AppLocalizations.of(context)!.about_app_language_section_description),
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: () => _showLanguageSelectionDialog(context, ref),
                 child: Text(
-                  AppLocalizations.of(context)!.languageTextButtonText,
+                  AppLocalizations.of(context)!.about_app_language_section_action,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -111,14 +140,14 @@ class InfoPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildTitle(AppLocalizations.of(context)!.reportProblemTitle),
+              _buildTitle(AppLocalizations.of(context)!.about_app_issue_section_title),
               const SizedBox(height: 8),
-              _buildText(AppLocalizations.of(context)!.reportProblemText1),
+              _buildText(AppLocalizations.of(context)!.about_app_issue_section_description),
               const SizedBox(height: 8),
               GestureDetector(
-                onTap: _launchEmail,
+                onTap: () => _launchEmail(context),
                 child: Text(
-                  AppLocalizations.of(context)!.reportProblemTextButtonText,
+                  AppLocalizations.of(context)!.about_app_issue_section_action,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -127,14 +156,14 @@ class InfoPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildTitle(AppLocalizations.of(context)!.theRidersTitle),
+              _buildTitle(AppLocalizations.of(context)!.about_app_riders_section_title),
               const SizedBox(height: 8),
-              _buildText(AppLocalizations.of(context)!.theRidersText),
+              _buildText(AppLocalizations.of(context)!.about_app_riders_section_description),
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: _openWebsite,
                 child: Text(
-                  AppLocalizations.of(context)!.theRidersButtonText,
+                  AppLocalizations.of(context)!.about_app_riders_section_action,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -145,7 +174,7 @@ class InfoPage extends ConsumerWidget {
               const SizedBox(height: 32), // Add some space at the bottom for better scrolling experience
               Center(
                 child: Text(
-                  AppLocalizations.of(context)!.poweredByCrystalPigeon,
+                  AppLocalizations.of(context)!.about_app_footer,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
                 ),

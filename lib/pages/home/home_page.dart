@@ -26,7 +26,7 @@ class HomePage extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.appTitle,
+          title: Text(AppLocalizations.of(context)!.home_title,
           style: const TextStyle(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
@@ -45,12 +45,13 @@ class HomePage extends ConsumerWidget {
           ],
           bottom: TabBar(
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.workDayTabTitle),
-              Tab(text: AppLocalizations.of(context)!.saturdayTabTitle),
-              Tab(text: AppLocalizations.of(context)!.sundayTabTitle),
+              Tab(text: AppLocalizations.of(context)!.home_workday,),
+              Tab(text: AppLocalizations.of(context)!.home_saturday),
+              Tab(text: AppLocalizations.of(context)!.home_sunday),
             ],
             indicatorColor: Colors.white,
             labelColor: Colors.white,
+            labelPadding: EdgeInsets.zero,
             unselectedLabelColor: Colors.white,
           ),
         ),
@@ -123,7 +124,7 @@ class HomePage extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             textAlign: TextAlign.center,
-            AppLocalizations.of(context)!.pressPlusText,
+            AppLocalizations.of(context)!.home_no_data_message,
             style: const TextStyle(fontSize: 15, color: Colors.grey),
           ),
         ],
