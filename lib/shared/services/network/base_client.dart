@@ -63,6 +63,7 @@ class BaseClient {
     }
   }
 
+
   dynamic checkResponse(dynamic response, BuildContext context) {
     try {
       if (response.statusCode == 200 || response.statusCode == 201) {

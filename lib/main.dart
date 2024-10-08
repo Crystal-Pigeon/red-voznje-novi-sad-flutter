@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_voznje_novi_sad_flutter/helpers/theme_mode_extension.dart';
 import 'package:red_voznje_novi_sad_flutter/l10n/l10n.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/settings/info_page/state/localization_provider.dart';
+import 'package:red_voznje_novi_sad_flutter/shared/di/dependency_injection.dart';
 import 'config/app_router_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,7 +18,7 @@ void main() async {
   } catch (e) {
     debugPrint('Firebase initialization error: $e');
   }
-
+  DependencyInjection.init();
   runApp(const ProviderScope(child: MyApp()));
 }
 

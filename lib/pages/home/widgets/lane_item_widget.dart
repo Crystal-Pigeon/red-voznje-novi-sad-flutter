@@ -27,7 +27,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
   Widget build(BuildContext context) {
     final busSchedulesMap = ref.watch(busScheduleProvider);
     final busScheduleState =
-        busSchedulesMap['${widget.lane.lane.id}-${widget.dayType}'];
+    busSchedulesMap['${widget.lane.lane.id}-${widget.dayType}'];
 
     if (busScheduleState == null) {
       return Padding(
@@ -47,7 +47,12 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
       );
     }
 
-    if (busScheduleState.error != null) {
+    final busSchedules = busScheduleState.schedules ?? [];
+    final filteredSchedules = busSchedules
+        .where((schedule) => schedule.dan == widget.dayType)
+        .toList();
+
+    if (busScheduleState.error != null || filteredSchedules.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -117,15 +122,6 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
           ),
         ),
       );
-    }
-
-    final busSchedules = busScheduleState.schedules ?? [];
-    final filteredSchedules = busSchedules
-        .where((schedule) => schedule.dan == widget.dayType)
-        .toList();
-
-    if (filteredSchedules.isEmpty) {
-      return const SizedBox.shrink();
     }
 
     return Column(
@@ -252,7 +248,7 @@ class _LaneItemWidgetState extends ConsumerState<LaneItemWidget> {
 
     // Determine the position of the current hour if it exists
     final currentIndex =
-        sortedEntries.indexWhere((entry) => entry.key == currentHour);
+    sortedEntries.indexWhere((entry) => entry.key == currentHour);
 
     // Logic to select 3 entries based on the current hour
     List<MapEntry<String, List<String>>> displayEntries;

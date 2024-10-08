@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:red_voznje_novi_sad_flutter/shared/controllers/network_controller.dart';
 import 'package:red_voznje_novi_sad_flutter/pages/lanes/state/lanes_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -8,6 +11,9 @@ class LanesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Access the NetworkController instance
+    final NetworkController networkController = Get.find<NetworkController>();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -25,36 +31,36 @@ class LanesPage extends ConsumerWidget {
             unselectedLabelColor: Colors.white,
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildLaneList(context, ref, 'rvg'),
-            _buildLaneList(context, ref, 'rvp'),
-          ],
-        ),
+        body: Obx(() {
+          final lanesMap = ref.watch(lanesProvider);
+          if (!networkController.isConnected.value && lanesMap.isEmpty) {
+            return _buildNoInternetMessage(context);
+          } else {
+            return TabBarView(
+              children: [
+                _buildLaneList(context, ref, 'rvg'),
+                _buildLaneList(context, ref, 'rvp'),
+              ],
+            );
+          }
+        }),
       ),
     );
   }
 
   Widget _buildLaneList(BuildContext context, WidgetRef ref, String rv) {
-    // Fetch lanes initially when the widget is built
     ref.read(lanesProvider.notifier).fetchLanes(context, rv);
 
     final lanesMap = ref.watch(lanesProvider);
     final lanes = lanesMap[rv];
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        // Clear lanes and re-fetch them on pull to refresh
-        ref.read(lanesProvider.notifier).clearLanes();
-        await ref.read(lanesProvider.notifier).fetchLanes(context, rv);
-      },
-      child: lanes == null
-          ? const Center(child: CircularProgressIndicator.adaptive())
-          : lanes.isEmpty
-              ? _buildNoInternetMessage(context)
-              : _buildLanesList(context, ref, lanes, rv),
-    );
+    return lanes == null
+        ? const Center(child: CircularProgressIndicator.adaptive())
+        : lanes.isEmpty
+        ? _buildTabPageNoLanes(context)
+        : _buildLanesList(context, ref, lanes, rv);
   }
+
 
   Widget _buildNoInternetMessage(BuildContext context) {
     return ListView(
@@ -71,6 +77,7 @@ class LanesPage extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
+              textAlign: TextAlign.center,
               AppLocalizations.of(context)!.error_no_internet_connection,
               style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
@@ -89,15 +96,15 @@ class LanesPage extends ConsumerWidget {
       itemBuilder: (context, index) {
         final lane = lanes[index];
         final isSelected = selectedLanes.any(
-          (selectedLane) =>
-              selectedLane.lane.id == lane.id && selectedLane.type == rv,
+              (selectedLane) =>
+          selectedLane.lane.id == lane.id && selectedLane.type == rv,
         );
 
         return Column(
           children: [
             ListTile(
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
               visualDensity: VisualDensity.compact,
               title: Row(
                 children: [
@@ -117,7 +124,7 @@ class LanesPage extends ConsumerWidget {
               ),
               trailing: isSelected
                   ? Icon(Icons.check,
-                      color: Theme.of(context).colorScheme.onPrimary)
+                  color: Theme.of(context).colorScheme.onPrimary)
                   : null,
               onTap: () {
                 ref
@@ -129,6 +136,32 @@ class LanesPage extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildTabPageNoLanes(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final iconPath = isDarkMode
+        ? 'lib/assets/dark_bus_icon.svg'
+        : 'lib/assets/light_bus_icon.svg';
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            iconPath,
+            width: 120,
+            height: 120,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            textAlign: TextAlign.center,
+            AppLocalizations.of(context)!.bus_lines_no_data_message,
+            style: const TextStyle(fontSize: 15, color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }
