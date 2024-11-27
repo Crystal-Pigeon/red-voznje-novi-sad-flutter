@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_voznje_novi_sad_flutter/shared/managers/snackbar_manager.dart';
 
 class BaseClient {
+  SnackbarManager snackbarManager = SnackbarManager();
   var client = http.Client();
   static String baseUrl = 'http://www.gspns.co.rs';
 
@@ -14,7 +16,8 @@ class BaseClient {
     "Content-Type": "application/json; charset=UTF-8",
   };
 
-  Future<dynamic> get(String target, BuildContext context, {Map<String, String>? customHeaders}) async {
+  Future<dynamic> get(String target, BuildContext context,
+      {Map<String, String>? customHeaders}) async {
     var url = Uri.parse(baseUrl + target);
     Map<String, String> requestHeaders = Map.from(basicHeaders);
 
@@ -30,8 +33,10 @@ class BaseClient {
       debugPrint("status code: ${response.statusCode}");
       if (!context.mounted) return;
 
-      if (response.headers['content-type']?.contains('application/json') == true) {
-        return checkResponse(response, context);  // Parse as JSON if content type is JSON
+      if (response.headers['content-type']?.contains('application/json') ==
+          true) {
+        return checkResponse(
+            response, context); // Parse as JSON if content type is JSON
       } else {
         // Return as a plain text (HTML) response if the content is not JSON
         return response.body;
@@ -40,7 +45,8 @@ class BaseClient {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.timeout, textAlign: TextAlign.center),
+          content: Text(AppLocalizations.of(context)!.timeout,
+              textAlign: TextAlign.center),
         ),
       );
       return null;
@@ -54,24 +60,21 @@ class BaseClient {
       return null;
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${AppLocalizations.of(context)!.anErrorOccurred} $e', textAlign: TextAlign.center),
-        ),
-      );
+      debugPrint("Error: $e");
       return null;
     }
   }
 
-
   dynamic checkResponse(dynamic response, BuildContext context) {
     try {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body);  // Only parse JSON responses
+        return jsonDecode(response.body); // Only parse JSON responses
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppLocalizations.of(context)!.error} ${response.statusCode}', textAlign: TextAlign.center),
+            content: Text(
+                '${AppLocalizations.of(context)!.error} ${response.statusCode}',
+                textAlign: TextAlign.center),
           ),
         );
         return null;
@@ -79,7 +82,8 @@ class BaseClient {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to decode response: $e', textAlign: TextAlign.center),
+          content: Text('Failed to decode response: $e',
+              textAlign: TextAlign.center),
         ),
       );
       return null;

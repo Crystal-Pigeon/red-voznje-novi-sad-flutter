@@ -1,3 +1,5 @@
+// import 'package:amplitude_flutter/amplitude.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +20,21 @@ void main() async {
   } catch (e) {
     debugPrint('Firebase initialization error: $e');
   }
+
+  // await dotenv.load(fileName: ".env");
+  // final String apiKey = dotenv.env['AMPLITUDE_API_KEY']!;
+  // initializeAmplitude(apiKey);
+
+
   DependencyInjection.init();
   runApp(const ProviderScope(child: MyApp()));
 }
+
+// void initializeAmplitude(String apiKey) {
+//
+//   final Amplitude amplitude = Amplitude.getInstance(instanceName: "red_voznje_flutter");
+//   amplitude.init(apiKey);
+// }
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});

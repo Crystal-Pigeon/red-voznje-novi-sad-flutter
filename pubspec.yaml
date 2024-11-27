@@ -1,7 +1,7 @@
 name: red_voznje_novi_sad_flutter
 description: "Mobilna aplikacija sa redovima javnog prevoza Novi Sad"
 
-version: 1.2.0+5
+version: 1.2.1+1
 
 environment:
   sdk: '>=3.5.0-222.0.dev <4.0.0'
@@ -30,6 +30,8 @@ dependencies:
   firebase_analytics: 11.3.2
   connectivity_plus: ^6.0.5
   get: ^4.6.6
+#  amplitude_flutter: ^3.7.0
+#  flutter_dotenv: ^5.1.0
 
 flutter_native_splash:
   color: "#ffffff"
@@ -58,6 +60,7 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/
+    - .env
   fonts:
     - family: Manrope
       fonts:

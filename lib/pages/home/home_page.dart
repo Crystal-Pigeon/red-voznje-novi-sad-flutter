@@ -22,12 +22,27 @@ class HomePage extends ConsumerWidget {
           .fetchBusSchedule(context, lane.lane.id, lane.type);
     }
 
+    // Determine the current day of the week
+    final now = DateTime.now();
+    int initialIndex;
+    switch (now.weekday) {
+      case DateTime.saturday:
+        initialIndex = 1; // Saturday tab index
+        break;
+      case DateTime.sunday:
+        initialIndex = 2; // Sunday tab index
+        break;
+      default:
+        initialIndex = 0; // Workday tab index
+    }
+
     return DefaultTabController(
       length: 3,
+      initialIndex: initialIndex, // Set initial index based on the current day
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.home_title,
-          style: const TextStyle(fontSize: 18)),
+              style: const TextStyle(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(CupertinoIcons.move),
@@ -45,7 +60,7 @@ class HomePage extends ConsumerWidget {
           ],
           bottom: TabBar(
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.home_workday,),
+              Tab(text: AppLocalizations.of(context)!.home_workday),
               Tab(text: AppLocalizations.of(context)!.home_saturday),
               Tab(text: AppLocalizations.of(context)!.home_sunday),
             ],
