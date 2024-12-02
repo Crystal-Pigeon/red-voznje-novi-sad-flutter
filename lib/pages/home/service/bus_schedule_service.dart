@@ -6,38 +6,77 @@ import '../../../shared/services/network/base_client.dart';
 import '../model/bus_schedule_response.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
-
+import 'package:http/http.dart' as http;
 
 class BusScheduleService extends BaseClient {
   static const String baseUrl = "/red-voznje/ispis-polazaka";
+  static const String fallbackUrl = 'http://www.gspns.co.rs/red-voznje/gradski';
 
   Future<String?> getDate(BuildContext context) async {
     const url = '/feeds/red-voznje';
 
+    // Attempt to fetch date from the API endpoint
     final response = await get(url, context);
 
     if (response != null) {
-      try {
-        // Trim the string to remove unnecessary whitespace
-        final trimmedResponse = response.trim();
+      if (response.statusCode == 200) {
+        try {
+          final trimmedResponse = response.body.trim();
+          final List<dynamic> jsonResponse = jsonDecode(trimmedResponse) as List<dynamic>;
 
-        // Parse the trimmed response as JSON
-        final List<dynamic> jsonResponse = jsonDecode(trimmedResponse) as List<dynamic>;
-
-        if (jsonResponse.isNotEmpty) {
-          final datum = jsonResponse.first['datum'] as String?;
-          return datum;
-        } else {
-          debugPrint('No datum found in response');
+          if (jsonResponse.isNotEmpty) {
+            final datum = jsonResponse.first['datum'] as String?;
+            return datum;
+          } else {
+            debugPrint('No datum found in API response');
+            return null;
+          }
+        } catch (e) {
+          debugPrint('Error parsing API JSON response: $e');
           return null;
         }
-      } catch (e) {
-        debugPrint('Error extracting datum: $e');
-        return null;
+      } else if (response.statusCode == 404) {
+        debugPrint('API returned 404, falling back to HTML page');
+        return _fetchDateFromHtml();
+      } else {
+        debugPrint('API returned unexpected status: ${response.statusCode}');
       }
     } else {
-      return null;
+      debugPrint('API response is null, falling back to HTML page');
+      return _fetchDateFromHtml();
     }
+
+    return null;
+  }
+
+  /// Fetch the date from the fallback HTML page
+  Future<String?> _fetchDateFromHtml() async {
+    try {
+      final fallbackResponse = await http.get(Uri.parse(fallbackUrl));
+
+      if (fallbackResponse.statusCode == 200) {
+        final document = parse(fallbackResponse.body);
+
+        final selectElement = document.getElementById('vaziod');
+        if (selectElement != null) {
+          final optionElement = selectElement.getElementsByTagName('option').first;
+          if (optionElement != null) {
+            final value = optionElement.attributes['value'];
+            debugPrint('Extracted value from fallback HTML: $value');
+            return value;
+          } else {
+            debugPrint('No <option> element found under #vaziod');
+          }
+        } else {
+          debugPrint('No element with id "vaziod" found in fallback HTML');
+        }
+      } else {
+        debugPrint('Fallback HTML page returned error: ${fallbackResponse.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Error fetching date from fallback HTML: $e');
+    }
+    return null;
   }
 
   Future<List<BusSchedule>?> getBusSchedule(
@@ -117,7 +156,7 @@ class BusScheduleService extends BaseClient {
     ];
   }
 
-// Helper function to parse the schedule for direction A, B, or single direction
+  // Helper function to parse the schedule for direction A, B, or single direction
   Map<String, List<String>> _parseSchedule(String directionHtml) {
     final Map<String, List<String>> schedule = {};
 
@@ -142,7 +181,7 @@ class BusScheduleService extends BaseClient {
         final timeElements = node.querySelectorAll('span');
         if (timeElements.isNotEmpty) {
           final times = timeElements.map((e) => e.text.trim()).toList();
-          currentTimes.addAll(times);  // Add all times to the current hour
+          currentTimes.addAll(times); // Add all times to the current hour
         }
       }
     }
@@ -154,6 +193,4 @@ class BusScheduleService extends BaseClient {
 
     return schedule;
   }
-
-
 }

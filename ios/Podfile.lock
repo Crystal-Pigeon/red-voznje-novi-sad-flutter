@@ -1,8 +1,4 @@
 PODS:
-  - Amplitude (8.5.0)
-  - amplitude_flutter (0.0.1):
-    - Amplitude (= 8.5.0)
-    - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -145,7 +141,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - amplitude_flutter (from `.symlinks/plugins/amplitude_flutter/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -157,7 +152,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Amplitude
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -175,8 +169,6 @@ SPEC REPOS:
     - PromisesSwift
 
 EXTERNAL SOURCES:
-  amplitude_flutter:
-    :path: ".symlinks/plugins/amplitude_flutter/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/darwin"
   firebase_analytics:
@@ -195,8 +187,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  Amplitude: ef9ed339ddd33c9183edf63fa4bbaa86cf873321
-  amplitude_flutter: 8ddb231989e68ed8c005c838d7fc59edbca09833
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
   Firebase: 9f574c08c2396885b5e7e100ed4293d956218af9
   firebase_analytics: 4fd10182fd08bb8358f26ac8aca8dad7b6d0f592

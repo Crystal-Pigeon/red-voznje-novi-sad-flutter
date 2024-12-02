@@ -70,13 +70,6 @@ class BaseClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body); // Only parse JSON responses
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                '${AppLocalizations.of(context)!.error} ${response.statusCode}',
-                textAlign: TextAlign.center),
-          ),
-        );
         return null;
       }
     } catch (e) {
