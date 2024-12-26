@@ -1,87 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart' show parse;
 import 'package:html/parser.dart';
+import 'package:red_voznje_novi_sad_flutter/helpers/helper_functions.dart';
 import '../../../shared/services/network/base_client.dart';
 import '../model/bus_schedule_response.dart';
-import 'package:html/parser.dart' show parse;
-import 'package:html/dom.dart' as dom;
-import 'package:http/http.dart' as http;
 
 class BusScheduleService extends BaseClient {
   static const String baseUrl = "/red-voznje/ispis-polazaka";
   static const String fallbackUrl = 'http://www.gspns.co.rs/red-voznje/gradski';
 
-  Future<String?> getDate(BuildContext context) async {
-    const url = '/feeds/red-voznje';
-
-    // Attempt to fetch date from the API endpoint
-    final response = await get(url, context);
-
-    if (response != null) {
-      if (response.statusCode == 200) {
-        try {
-          final trimmedResponse = response.body.trim();
-          final List<dynamic> jsonResponse = jsonDecode(trimmedResponse) as List<dynamic>;
-
-          if (jsonResponse.isNotEmpty) {
-            final datum = jsonResponse.first['datum'] as String?;
-            return datum;
-          } else {
-            debugPrint('No datum found in API response');
-            return null;
-          }
-        } catch (e) {
-          debugPrint('Error parsing API JSON response: $e');
-          return null;
-        }
-      } else if (response.statusCode == 404) {
-        debugPrint('API returned 404, falling back to HTML page');
-        return _fetchDateFromHtml();
-      } else {
-        debugPrint('API returned unexpected status: ${response.statusCode}');
-      }
-    } else {
-      debugPrint('API response is null, falling back to HTML page');
-      return _fetchDateFromHtml();
-    }
-
-    return null;
-  }
-
-  /// Fetch the date from the fallback HTML page
-  Future<String?> _fetchDateFromHtml() async {
-    try {
-      final fallbackResponse = await http.get(Uri.parse(fallbackUrl));
-
-      if (fallbackResponse.statusCode == 200) {
-        final document = parse(fallbackResponse.body);
-
-        final selectElement = document.getElementById('vaziod');
-        if (selectElement != null) {
-          final optionElement = selectElement.getElementsByTagName('option').first;
-          if (optionElement != null) {
-            final value = optionElement.attributes['value'];
-            debugPrint('Extracted value from fallback HTML: $value');
-            return value;
-          } else {
-            debugPrint('No <option> element found under #vaziod');
-          }
-        } else {
-          debugPrint('No element with id "vaziod" found in fallback HTML');
-        }
-      } else {
-        debugPrint('Fallback HTML page returned error: ${fallbackResponse.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('Error fetching date from fallback HTML: $e');
-    }
-    return null;
-  }
-
   Future<List<BusSchedule>?> getBusSchedule(
       BuildContext context, String laneId, String rv, String day) async {
-    final String? datum = await getDate(context);
+    final String? datum = await fetchDateFromHtml();
     if (datum == null) return [];
 
     final String query = '?rv=$rv&vaziod=$datum&dan=$day&linija%5B%5D=$laneId';
